@@ -1,0 +1,20 @@
+
+script: script.R
+
+parameters:
+    api_key:
+      default: "NA"
+    ctry:
+      default: "GB"
+
+
+artefacts: 
+  data:
+    description: Downloaded cases from global dot health
+    filenames:
+      - dat.rds
+      
+packages:
+  - dplyr
+  - globaldothealth
+

@@ -1,0 +1,17 @@
+
+script: script.R
+
+parameters:
+  - api_key
+
+
+artefacts: 
+  data:
+    description: Downloaded cases from global dot health
+    filenames:
+      - dat.rds
+      
+packages:
+  - dplyr
+  - globaldothealth
+
