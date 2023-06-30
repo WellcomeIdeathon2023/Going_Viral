@@ -1,0 +1,33 @@
+script: script.R
+
+# You must list at least one artefact that your report will generate.
+# Each artefact consists of one or more files.  The format is to list
+# the "type" of an artefact (staticgraph, interactivegraph, data,
+# report), then below that a description (free text) and then a
+# filename as either a single file or an array of files
+#
+#     artefacts:
+#       - staticgraph:
+#           description: A graph of things
+#           filenames: mygraph.png
+#       - report:
+#           description: A complex report
+#           filenames:
+#             - report.html
+#             - figures/fig1.png
+#             - figures/fig2.png
+artefacts: 
+  - data:
+      description: model output
+      filenames: model_run.rds
+
+
+packages:
+  - epidemia
+  - ggplot2
+
+depends:
+ collate_data:
+   id: latest
+   use:
+     combined_dat.rds: combined_dat.rds
