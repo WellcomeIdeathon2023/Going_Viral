@@ -1,0 +1,12 @@
+
+script: script.R
+
+artefacts: 
+  - data:
+      description: Fake interview quotes
+      filenames:
+        dat.rds
+
+packages:
+  - tidytext
+
