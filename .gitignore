@@ -3,3 +3,6 @@
 .RData
 .Ruserdata
 code/draft
+code/archive
+*sqlite
+
