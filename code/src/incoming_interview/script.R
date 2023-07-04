@@ -1,3 +1,5 @@
+# Set seed
+set.seed(1)
 
 sentiment_vec <- tidytext::get_sentiments("bing")
 topic_vec <- c("COVID", "COVI19", "COVID-19", "vaccination", "vaccines", "infection", "isolation", "quarantine", "long COVID", "protecting my family")
