@@ -53,7 +53,7 @@ obs <- epiobs(formula = cases ~ 1, link = "identity",
 inf <- epiinf(gen = EuropeCovid$si, seed_days = 6)
 
 args <- list(rt = rt, inf = inf, obs = obs, data = case_dat, seed = 12345,
-             refresh = 0, iter = 1e2, control = list(max_treedepth = 12))
+             refresh = 0, iter = n_iter, control = list(max_treedepth = 12))
 
 fm <- do.call(epim, args)
 
