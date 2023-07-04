@@ -1,0 +1,15 @@
+script: script.R
+
+artefacts: 
+  data:
+    description: Vaccine-related tweets with brief cleaning
+    filenames:
+        - dat.rds
+
+packages:
+ - dplyr
+ - tidytext
+ - lubridate
+
+resources:
+  - vax_tweets.csv

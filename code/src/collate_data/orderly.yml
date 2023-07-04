@@ -1,6 +1,7 @@
 
 script: script.R
 
+displayname: Collated data
 
 artefacts:    
   - data:
@@ -29,6 +30,7 @@ packages:
   - stopwords
   - tidyr
   - ggplot2
+  - reshape2
 
 depends:
  incoming_vaxtweets:

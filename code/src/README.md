@@ -8,9 +8,9 @@ library(orderly)
 ```
 
 2) Download / create our incoming data sources.  This requires an api key for
-the globaldothealth data set.
+the globaldothealth data set to be set as an environment variable `$API_KEY`.
 ```
-orderly_run("incoming_globaldothealth", parameters = list(api_key = "xxxxx"))
+orderly_run("incoming_globaldothealth")
 orderly_run("incoming_vaxtweets")
 orderly_run("incoming_interview")
 ```
