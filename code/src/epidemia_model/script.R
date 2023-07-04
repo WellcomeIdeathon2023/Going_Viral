@@ -22,7 +22,7 @@ case_dat = case_dat[order(case_dat$date),]
 # Make NAs zero
 case_dat[is.na(case_dat)] = 0 
 
-# Start date on 1st August 2020 as month before when data changes to be London
+# Start date on 1st July 2020 as month before when data changes to be London
 # to allow seeding
 # End date 22nd December 2020 as that's when data zeros in London "2020-12-22"
 case_dat = case_dat %>%
