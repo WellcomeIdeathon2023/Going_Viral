@@ -20,3 +20,5 @@ The code in this repository is licenced under a permissive [MIT licence](https:/
 * wordcloud
 * stopwords
 * epidemia
+* lubridate
+* tidyr
