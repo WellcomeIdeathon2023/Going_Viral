@@ -16,9 +16,10 @@ This is an [`orderly`](https://github.com/vimc/orderly) project.  The directorie
    ```
    
 1. `orderly` will prompt you to install missing packages as reports are run, 
-but the only one missing from cran is the global health api which should first be installed manually:
+but a couple are missing from cran so should first be installed manually:
     ```
     devtools::install_github("globaldothealth/list/api/R")
+    devtools::install_github("ImperialCollegeLondon/epidemia")
     ```
 
 1. To run the `incoming_globaldothealth` report you will need an environment variable called API_KEY 
