@@ -19,6 +19,6 @@ The code in this repository is licenced under a permissive [MIT licence](https:/
 * tidytext
 * wordcloud
 * stopwords
-* epidemia
+* epidemia (devtools::install_github("ImperialCollegeLondon/epidemia"))
 * lubridate
 * tidyr
