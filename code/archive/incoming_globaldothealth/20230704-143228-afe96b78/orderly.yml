@@ -1,0 +1,18 @@
+
+script: script.R
+
+parameters:
+    ctry:
+      default: "GB"
+
+
+artefacts: 
+  data:
+    description: Downloaded cases from global dot health (aggregated by days and 3rd admin unit)
+    filenames:
+      - dat.rds
+      
+packages:
+  - dplyr
+  - globaldothealth
+

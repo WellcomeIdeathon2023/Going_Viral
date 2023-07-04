@@ -41,7 +41,7 @@ ggsave("sentiment_over_time.png", p)
 vax_sentiment <- vax_unnest %>%
   anti_join(get_stopwords(), by="word")%>%
   left_join(sent, by="word") %>%
-  mutate(date = date(date)) %>%
+  mutate(date = lubridate::date(date)) %>%
   group_by(date, sentiment, tidy_loc1) %>%
   summarise(sent_count = n())
 

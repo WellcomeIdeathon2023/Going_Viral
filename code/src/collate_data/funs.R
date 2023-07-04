@@ -8,7 +8,7 @@ plot_wordcloud <- function(vax_unnest, loc1_name="London", yr=NULL, sent=sent){
   save_name <- paste0("wordcloud_", loc1_name, "_", yr, ".png")
   
   if(!is.null(loc1_name)) vax_unnest <- vax_unnest %>% filter(tidy_loc1==loc1_name)
-  if(!is.null(yr)) vax_unnest <- vax_unnest %>% filter(year(date)==yr)
+  if(!is.null(yr)) vax_unnest <- vax_unnest %>% filter(lubridate::year(date)==yr)
   
   png(save_name, width=600, height=600)
   vax_unnest %>%
@@ -32,7 +32,7 @@ plot_sentiment_over_time <- function(vax_unnest, sent, loc1_name=NULL){
   vax_sentiment <- vax_unnest %>%
     anti_join(get_stopwords(), by="word")%>%
     left_join(sent, by="word") %>%
-    mutate(date = format_ISO8601(date, precision = "ym")) %>%
+    mutate(date = lubridate::format_ISO8601(date, precision = "ym")) %>%
     group_by(date, sentiment) %>%
     summarise(sent_count = n())
   

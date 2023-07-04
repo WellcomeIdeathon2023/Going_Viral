@@ -2,8 +2,6 @@
 script: script.R
 
 parameters:
-    api_key:
-      default: "NA"
     ctry:
       default: "GB"
 

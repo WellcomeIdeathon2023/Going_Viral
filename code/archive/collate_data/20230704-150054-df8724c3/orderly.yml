@@ -1,0 +1,44 @@
+
+script: script.R
+
+displayname: Collated data
+
+artefacts:    
+  - data:
+      description: Combined, aggregated data
+      filenames: combined_dat.rds
+      
+  - staticgraph:
+      description: All figures from exploratory analysis
+      filenames:
+      - wordcloud__.png
+      - wordcloud_London_.png
+      - wordcloud_London_2020.png
+      - wordcloud_London_2021.png
+      - wordcloud_London_2022.png
+      - sentiment_cases_over_time.png
+      - sentiment_over_time.png
+      - sentiment_over_time_london.png
+      
+sources:
+  - funs.R
+  
+packages:
+  - dplyr
+  - tidytext
+  - wordcloud
+  - stopwords
+  - tidyr
+  - ggplot2
+  - reshape2
+
+depends:
+ incoming_vaxtweets:
+   id: latest
+   use:
+     vaxtweets_dat.rds: dat.rds
+ incoming_globaldothealth:
+   id: latest(parameter:ctry=="GB")
+   use:
+     globaldothealth_dat.rds: dat.rds
+

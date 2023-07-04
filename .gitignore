@@ -3,6 +3,7 @@
 .RData
 .Ruserdata
 code/draft
-code/archive
 *sqlite
 .DS_Store
+.idea
+code/backup
