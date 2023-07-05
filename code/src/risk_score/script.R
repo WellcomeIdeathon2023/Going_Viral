@@ -46,10 +46,24 @@ coverage = coverage %>%
   select(-coverage, -date)
 names(coverage) = c("group", "score")
 
-# Consider tweet sentiment
+# Consider tweet sentiment. Not much data at the time period of the case data
+# aggregated to level of London.  Therefore calculating mean ratio of positive
+# to negative. With more data would be good to also include a metric of is
+# ratio changing and maybe something on number of tweets to weight it.
 sentiment = comb_data %>% 
-  filter(date > report_date - 7) %>%
-  select(date, tidy_loc1, negative, positive) 
+  filter(date > report_date - 60) %>%
+  select(date, tidy_loc1, negative, positive) %>%
+  group_by(tidy_loc1) %>%
+  summarise(total_negative = sum(negative, na.rm = TRUE),
+            total_positive = sum(positive, na.rm = TRUE)) %>%
+  mutate(ratio = total_positive / total_negative)
+# If ratio is > 1 and more positive sentiment than negative -1 from score.
+# If ratio is < 1 and more negative sentiment that positive +1 from score.
+sentiment$score = ifelse(sentiment$ratio > 1, -1, 1)
+sentiment$score[is.na(sentiment$score)] = 0
+sentiment = sentiment[which(!is.na(sentiment$tidy_loc1)),]
+sentiment = select(sentiment, tidy_loc1,  score)
+names(sentiment) = c("group", "score")
 
 # Combines risk score
 risk_score = NULL
@@ -63,7 +77,7 @@ if(use_vaccine_coverage == TRUE){
   risk_score = rbind(risk_score, coverage)
 }
 if(use_sentiment == TRUE){
-  #risk_score = rbind(risk_score, sentiment)
+  risk_score = rbind(risk_score, sentiment)
 }
 
 risk_scores = risk_score %>% 
@@ -72,6 +86,8 @@ risk_scores = risk_score %>%
 
 risk_scores$classify = ifelse(risk_scores$total_score < 1, "low", 
                               ifelse(risk_scores$total_score < 5, "medium", "high"))
-  
+
+print(risk_scores)
+
 # Selects the different data sources the user wants to generate the score
 saveRDS(risk_scores, file = "risk_score.rds")
