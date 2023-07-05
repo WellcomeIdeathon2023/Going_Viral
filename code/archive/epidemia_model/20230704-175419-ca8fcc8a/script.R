@@ -1,4 +1,5 @@
-options(mc.cores = parallel::detectCores())
+# This task takes a long time to run on a laptop - if you would like to 
+# investigate decrease iter on line 56 but the model will not converge
 
 # Reads in the data file
 dat = readRDS("combined_dat.rds")
@@ -21,7 +22,7 @@ case_dat = case_dat[order(case_dat$date),]
 # Make NAs zero
 case_dat[is.na(case_dat)] = 0 
 
-# Start date on 1st July 2020 as month before when data changes to be London
+# Start date on 1st August 2020 as month before when data changes to be London
 # to allow seeding
 # End date 22nd December 2020 as that's when data zeros in London "2020-12-22"
 case_dat = case_dat %>%
@@ -52,7 +53,7 @@ obs <- epiobs(formula = cases ~ 1, link = "identity",
 inf <- epiinf(gen = EuropeCovid$si, seed_days = 6)
 
 args <- list(rt = rt, inf = inf, obs = obs, data = case_dat, seed = 12345,
-             iter = n_iter, control = list(max_treedepth = 15))
+             refresh = 0, iter = 1e2, control = list(max_treedepth = 12))
 
 fm <- do.call(epim, args)
 
