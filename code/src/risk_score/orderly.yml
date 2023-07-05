@@ -1,5 +1,17 @@
 script: script.R
 
+parameters:
+    date:
+      default: "NA"
+    use_rt:
+      default: TRUE
+    use_projections:
+      default: TRUE
+    use_vaccine_coverage:
+      default: TRUE
+    use_sentiment:
+      default: TRUE
+      
 artefacts: 
   - data:
       description: risk score
