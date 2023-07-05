@@ -27,7 +27,7 @@ cases = plot_obs(fm, newdata = new_dat, type = "cases")$layers[[3]]$data %>%
   summarise(daily_mean = mean(median))
 # Weekly forecast score contribution. Plus one if mean increase is greater than 
 # 100 (probably would want to be population weighted), minus one if 0 cases are 
-# forecast.
+# forecast.  Could also incorporate if their are cases in the neighbouring regions.
 cases$score = ifelse(cases$daily_mean > 100, 1, 
                      ifelse(cases$daily_mean == 0, -1, 0))
 cases = cases %>% select(-daily_mean)
@@ -73,10 +73,10 @@ if (use_rt == TRUE){
 if (use_projections == TRUE){
   risk_score = rbind(risk_score, cases)
 }
-if(use_vaccine_coverage == TRUE){
+if (use_vaccine_coverage == TRUE){
   risk_score = rbind(risk_score, coverage)
 }
-if(use_sentiment == TRUE){
+if (use_sentiment == TRUE){
   risk_score = rbind(risk_score, sentiment)
 }
 
