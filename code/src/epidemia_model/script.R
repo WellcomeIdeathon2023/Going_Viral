@@ -1,5 +1,4 @@
-# This task takes a long time to run on a laptop - if you would like to 
-# investigate decrease iter on line 56 but the model will not converge
+options(mc.cores = parallel::detectCores())
 
 # Reads in the data file
 dat = readRDS("combined_dat.rds")
@@ -53,7 +52,7 @@ obs <- epiobs(formula = cases ~ 1, link = "identity",
 inf <- epiinf(gen = EuropeCovid$si, seed_days = 6)
 
 args <- list(rt = rt, inf = inf, obs = obs, data = case_dat, seed = 12345,
-             refresh = 0, iter = n_iter, control = list(max_treedepth = 12))
+             iter = n_iter, control = list(max_treedepth = 15))
 
 fm <- do.call(epim, args)
 
