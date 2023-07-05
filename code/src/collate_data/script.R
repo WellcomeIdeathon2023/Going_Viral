@@ -54,7 +54,10 @@ combined_dat <- globaldothealth_dat %>%
   full_join(vax_sentiment %>% filter(!is.na(sentiment)) %>% tidyr::pivot_wider(names_from=sentiment, values_from=sent_count))
 
 combined_dat <- combined_dat %>%
-  left_join(vaccinationcoverage_dat, by="date")
+  left_join(vaccinationcoverage_dat, by="date") %>% 
+  filter(date > as.Date("2020-06-30") & date < as.Date("2020-12-23"))
+
+# Filter data to 1st July 2020 to 22nd December 2020 as when have case data for London
 
 saveRDS(combined_dat, "combined_dat.rds")
 
