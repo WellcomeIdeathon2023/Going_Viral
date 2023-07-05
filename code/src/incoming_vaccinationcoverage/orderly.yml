@@ -1,0 +1,15 @@
+
+script: script.R
+
+
+artefacts:    
+  data:
+    description: Vaccination coverage (radomly generated) by date
+    filenames: dat.rds
+
+
+packages:
+  - lubridate
+
+sources:
+  generate_vaccination_coverage.R
