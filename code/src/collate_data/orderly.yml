@@ -41,4 +41,8 @@ depends:
    id: latest(parameter:ctry=="GB")
    use:
      globaldothealth_dat.rds: dat.rds
+ incoming_vaccinationcoverage:
+   id: latest
+   use:
+     vaccinationcoverage_dat.rds: dat.rds
 

@@ -19,4 +19,10 @@ for(i in 1:100){
   int[i] <- generate_interview_statement(sentiment_vec, topic_vec, institution_vec)
 }
 
-saveRDS(int, "dat.rds")
+# add random dates
+date_range <- lubridate::as_date(lubridate::dmy("01-09-2020"):lubridate::dmy("31-12-2020"))
+
+df <- data.frame(interview=int,
+                 date = sample(date_range, size=100, replace = TRUE))
+
+saveRDS(df, "dat.rds")
