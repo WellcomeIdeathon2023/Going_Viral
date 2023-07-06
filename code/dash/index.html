@@ -262,9 +262,20 @@
                 </div>
             </div>
 
-            <div class="leaflet-pane leaflet-popup-pane" id="wordcloud" v-show="wordcloud">
+            <div class="leaflet-pane leaflet-popup-pane" id="wordcloud" v-show="showSource('tweets')">
                 <div class="leaflet-popup leaflet-zoom-animated"
                      style="opacity: 1; transform: translate3d(557px, 698px, 0px); top: -520px; left: -250px">
+                    <div class="leaflet-popup-content-wrapper" style="border-radius: 163px;   overflow: hidden;">
+                        <div class="leaflet-popup-content" style="width: 300px;">
+                            <img width="100%"
+                                 src="../archive/collate_data/20230704-150054-df8724c3/wordcloud_London_.png"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="leaflet-pane leaflet-popup-pane" id="interview" v-show="showSource('interviews')">
+                <div class="leaflet-popup leaflet-zoom-animated"
+                     style="opacity: 1; transform: translate3d(557px, 698px, 0px); top: -520px; left: 250px">
                     <div class="leaflet-popup-content-wrapper" style="border-radius: 163px;   overflow: hidden;">
                         <div class="leaflet-popup-content" style="width: 300px;">
                             <img width="100%"
@@ -284,16 +295,6 @@
 <script src="https://unpkg.com/topojson@3.0.2/dist/topojson.min.js"></script>
 <script type="module">
     import {createApp} from 'https://unpkg.com/petite-vue?module'
-
-    // const map = L.map('map').setView([55.3781, -3.4360], 6);
-    //
-    // L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/toner-lite/{z}/{x}/{y}{r}.{ext}', {
-    //     attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-    //     subdomains: 'abcd',
-    //     minZoom: 0,
-    //     maxZoom: 20,
-    //     ext: 'png'
-    // }).addTo(map);
 
     L.TopoJSON = L.GeoJSON.extend({
         addData: function (data) {
@@ -328,39 +329,12 @@
                                 '#FFEDA0';
     }
 
-    // function showData(feature) {
-    //
-    // }
-
-    //create an empty geojson layer
-    //with a style and a popup on click
-    // var geojson = L.topoJson(null, {
-    //     style: function (feature) {
-    //         return {
-    //             fillColor: getColor(feature.properties.EER13NM),
-    //             weight: 2,
-    //             opacity: 1,
-    //             color: 'white',
-    //             dashArray: '3',
-    //             fillOpacity: 0.7
-    //         }
-    //     },
-    //     onEachFeature: function (feature, layer) {
-    //         layer.bindPopup('<p>' + feature.properties.EER13NM + '</p>')
-    //         layer.on("click", showData(feature))
-    //     }
-    // }).addTo(map);
-    //fill: #317581;
-    //define a function to get and parse geojson from URL
     async function getGeoData(url) {
         let response = await fetch(url);
         let data = await response.json();
         return data;
     }
 
-    //fetch the geojson and add it to our geojson layer
-    // getGeoData('https://raw.githubusercontent.com/martinjc/UK-GeoJSON/master/json/electoral/gb/topo_eer.json')
-    //     .then(data => geojson.addData(data));
     const app = createApp({
         sources: [
             {name: "tweets", url: "", artefact: "", selected: false},
@@ -382,11 +356,12 @@
             ext: 'png'
         }),
         show: false,
+        feature: "",
         get selected() {
             return this.sources.filter(s => s.selected)
         },
-        get wordcloud() {
-            return this.show && this.sources.find(s => s.name == "tweets" && s.selected) != null
+        showSource(name) {
+            return this.feature == "London" && this.show && this.sources.find(s => s.name == name && s.selected) != null
         },
         select(event) {
             const name = event.target._value;
@@ -394,7 +369,8 @@
             source.selected = !source.selected;
         },
         toggleData(feature) {
-            this.show = !this.show
+            this.feature = feature.properties.EER13NM;
+            this.show = !this.show;
         },
         mounted: function () {
             this.tiles.addTo(this.map);
@@ -412,7 +388,7 @@
                 },
                 onEachFeature: function (feature, layer) {
                     layer.bindPopup('<p>' + feature.properties.EER13NM + '</p>')
-                    layer.on("click", function (feature) {
+                    layer.on("click", function () {
                         self.toggleData(feature)
                     });
                     layer.on("popupclose", function () {
