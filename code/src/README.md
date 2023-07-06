@@ -27,3 +27,8 @@ This step runs a Bayesian model so may be slow to run to convergence on your com
 orderly_run("epidemia_model")
 #orderly_run("epidemia_model", parameters = list(n_iter = 10000))
 ```
+
+5) Calculates risk score
+```
+orderly_run("risk_score")
+```

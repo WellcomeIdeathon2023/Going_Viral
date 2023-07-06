@@ -19,7 +19,10 @@ artefacts:
       
 packages:
   - ggplot2
-
+  - dplyr
+  - tidyr
+  - epidemia
+  
 depends:
  collate_data:
    id: latest

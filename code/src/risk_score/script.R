@@ -12,30 +12,30 @@ if (date == "NA"){
 
 # Select rt values for given date. 
 rt = plot_rt(fm, newdata = new_dat)$data %>% 
-  filter(date == report_date) %>%
-  filter(tag != "60% CI") # Only consider 30 and 90% CIs for score metric
+  dplyr::filter(date == report_date) %>%
+  dplyr::filter(tag != "60% CI") # Only consider 30 and 90% CIs for score metric
 # Rt risk score contribution.  Plus one if lower 90% CI is above 1 and if lower
 # 30% CI is above 1.(Basically +2 if 90% > 1 and +1 if only 30% > 1)
 rt$score = ifelse(rt$lower > 1, 1, 0) 
-rt = rt %>% group_by(group) %>%
-  summarise(score = sum(score))
+rt = rt %>% dplyr::group_by(group) %>%
+  dplyr::summarise(score = sum(score))
 
 # Consider case projections for the next week
-cases = plot_obs(fm, newdata = new_dat, type = "cases")$layers[[3]]$data %>% 
-  filter(date > report_date) %>% 
-  group_by(group) %>%
-  summarise(daily_mean = mean(median))
+cases = epidemia::plot_obs(fm, newdata = new_dat, type = "cases")$layers[[3]]$data %>% 
+  dplyr::filter(date > report_date) %>% 
+  dplyr::group_by(group) %>%
+  dplyr::summarise(daily_mean = mean(median))
 # Weekly forecast score contribution. Plus one if mean increase is greater than 
 # 100 (probably would want to be population weighted), minus one if 0 cases are 
 # forecast.  Could also incorporate if their are cases in the neighbouring regions.
 cases$score = ifelse(cases$daily_mean > 100, 1, 
                      ifelse(cases$daily_mean == 0, -1, 0))
-cases = cases %>% select(-daily_mean)
+cases = cases %>% dplyr::select(-daily_mean)
 
 # Consider vaccine coverage on the date of report
 coverage = comb_data %>% 
-  select(date, tidy_loc1, coverage) %>%
-  filter(date >= report_date)
+  dplyr::select(date, tidy_loc1, coverage) %>%
+  dplyr::filter(date >= report_date)
 # If coverage is less than 25% increase risk score by 2, if less than 50% increase
 # by 1. If vaccination is 95% or more decrease risk score by 1.
 coverage$score = ifelse(coverage$coverage < 0.25, 2, 
@@ -43,7 +43,7 @@ coverage$score = ifelse(coverage$coverage < 0.25, 2,
                         ifelse(coverage$coverage >= 0.95, -1, 0)))
 coverage = coverage %>% 
   ungroup() %>% 
-  select(-coverage, -date)
+  dplyr::select(-coverage, -date)
 names(coverage) = c("group", "score")
 
 # Consider tweet sentiment. Not much data at the time period of the case data
@@ -51,12 +51,12 @@ names(coverage) = c("group", "score")
 # to negative. With more data would be good to also include a metric of is
 # ratio changing and maybe something on number of tweets to weight it.
 sentiment = comb_data %>% 
-  filter(date > report_date - 60) %>%
-  select(date, tidy_loc1, negative, positive) %>%
-  group_by(tidy_loc1) %>%
-  summarise(total_negative = sum(negative, na.rm = TRUE),
+  dplyr::filter(date > report_date - 60) %>%
+  dplyr::select(date, tidy_loc1, negative, positive) %>%
+  dplyr::group_by(tidy_loc1) %>%
+  dplyr::summarise(total_negative = sum(negative, na.rm = TRUE),
             total_positive = sum(positive, na.rm = TRUE)) %>%
-  mutate(ratio = total_positive / total_negative)
+  dplyr::mutate(ratio = total_positive / total_negative)
 # If ratio is > 1 and more positive sentiment than negative -1 from score.
 # If ratio is < 1 and more negative sentiment that positive +1 from score.
 sentiment$score = ifelse(sentiment$ratio > 1, -1, 1)
@@ -81,8 +81,8 @@ if (use_sentiment == TRUE){
 }
 
 risk_scores = risk_score %>% 
-  group_by(group) %>%
-  summarise(total_score = sum(score))
+  dplyr::group_by(group) %>%
+  dplyr::summarise(total_score = sum(score))
 
 risk_scores$classify = ifelse(risk_scores$total_score < 1, "low", 
                               ifelse(risk_scores$total_score < 5, "medium", "high"))
