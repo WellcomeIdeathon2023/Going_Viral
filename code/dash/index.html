@@ -4,112 +4,32 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
-    <title>Dashboard</title>
-
+    <title>QQaVERS</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <style>
-        .bd-placeholder-img {
-            font-size: 1.125rem;
-            text-anchor: middle;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            user-select: none;
-        }
-
-        @media (min-width: 768px) {
-            .bd-placeholder-img-lg {
-                font-size: 3.5rem;
-            }
-        }
-
-        .b-example-divider {
-            width: 100%;
-            height: 3rem;
-            background-color: rgba(0, 0, 0, .1);
-            border: solid rgba(0, 0, 0, .15);
-            border-width: 1px 0;
-            box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
-        }
-
-        .b-example-vr {
-            flex-shrink: 0;
-            width: 1.5rem;
-            height: 100vh;
-        }
-
-        .bi {
-            vertical-align: -.125em;
-            fill: currentColor;
-        }
-
-        .nav-scroller {
-            position: relative;
-            z-index: 2;
-            height: 2.75rem;
-            overflow-y: hidden;
-        }
-
-        .nav-scroller .nav {
-            display: flex;
-            flex-wrap: nowrap;
-            padding-bottom: 1rem;
-            margin-top: -1px;
-            overflow-x: auto;
-            text-align: center;
-            white-space: nowrap;
-            -webkit-overflow-scrolling: touch;
-        }
-
-        .btn-bd-primary {
-            --bd-violet-bg: #712cf9;
-            --bd-violet-rgb: 112.520718, 44.062154, 249.437846;
-
-            --bs-btn-font-weight: 600;
-            --bs-btn-color: var(--bs-white);
-            --bs-btn-bg: var(--bd-violet-bg);
-            --bs-btn-border-color: var(--bd-violet-bg);
-            --bs-btn-hover-color: var(--bs-white);
-            --bs-btn-hover-bg: #6528e0;
-            --bs-btn-hover-border-color: #6528e0;
-            --bs-btn-focus-shadow-rgb: var(--bd-violet-rgb);
-            --bs-btn-active-color: var(--bs-btn-hover-color);
-            --bs-btn-active-bg: #5a23c8;
-            --bs-btn-active-border-color: #5a23c8;
-        }
-
-        .bd-mode-toggle {
-            z-index: 1500;
-        }
-
-        #map {
-            height: 800px;
-        }
-    </style>
-
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
           integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
-    <!-- Custom styles for this template -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css" rel="stylesheet">
-    <!-- Custom styles for this template -->
-    <link href="dashboard.css" rel="stylesheet">
+    <style>
+        #map {
+            height: 700px;
+            width: 700px
+        }
+
+        .legend {
+            line-height: 18px;
+            color: #555;
+        }
+
+        .legend i {
+            width: 18px;
+            height: 18px;
+            float: left;
+            margin-right: 8px;
+            opacity: 0.7;
+        }
+    </style>
 </head>
 <body>
-<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
-    <symbol id="check2" viewBox="0 0 16 16">
-        <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
-    </symbol>
-    <symbol id="circle-half" viewBox="0 0 16 16">
-        <path d="M8 15A7 7 0 1 0 8 1v14zm0 1A8 8 0 1 1 8 0a8 8 0 0 1 0 16z"/>
-    </symbol>
-    <symbol id="moon-stars-fill" viewBox="0 0 16 16">
-        <path d="M6 .278a.768.768 0 0 1 .08.858 7.208 7.208 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527 0 1.04-.055 1.533-.16a.787.787 0 0 1 .81.316.733.733 0 0 1-.031.893A8.349 8.349 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.752.752 0 0 1 6 .278z"/>
-        <path d="M10.794 3.148a.217.217 0 0 1 .412 0l.387 1.162c.173.518.579.924 1.097 1.097l1.162.387a.217.217 0 0 1 0 .412l-1.162.387a1.734 1.734 0 0 0-1.097 1.097l-.387 1.162a.217.217 0 0 1-.412 0l-.387-1.162A1.734 1.734 0 0 0 9.31 6.593l-1.162-.387a.217.217 0 0 1 0-.412l1.162-.387a1.734 1.734 0 0 0 1.097-1.097l.387-1.162zM13.863.099a.145.145 0 0 1 .274 0l.258.774c.115.346.386.617.732.732l.774.258a.145.145 0 0 1 0 .274l-.774.258a1.156 1.156 0 0 0-.732.732l-.258.774a.145.145 0 0 1-.274 0l-.258-.774a1.156 1.156 0 0 0-.732-.732l-.774-.258a.145.145 0 0 1 0-.274l.774-.258c.346-.115.617-.386.732-.732L13.863.1z"/>
-    </symbol>
-    <symbol id="sun-fill" viewBox="0 0 16 16">
-        <path d="M8 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708z"/>
-    </symbol>
-</svg>
 
 <div class="dropdown position-fixed bottom-0 end-0 mb-3 me-3 bd-mode-toggle">
     <button class="btn btn-bd-primary py-2 dropdown-toggle d-flex align-items-center"
@@ -198,42 +118,61 @@
             <div class="offcanvas-lg offcanvas-end bg-body-tertiary" tabindex="-1" id="sidebarMenu"
                  aria-labelledby="sidebarMenuLabel">
                 <div class="offcanvas-header">
-                    <h5 class="offcanvas-title" id="sidebarMenuLabel">Company name</h5>
+                    <h5 class="offcanvas-title" id="sidebarMenuLabel">QQAVERS</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#sidebarMenu"
                             aria-label="Close"></button>
                 </div>
                 <div class="offcanvas-body d-md-flex flex-column p-0 pt-lg-3 overflow-y-auto">
-                    <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-body-secondary">
-                        <span>Click on a region to view data</span>
-                    </h6>
-                    <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-body-secondary text-uppercase">
+
+                    <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mb-1 text-body-secondary text-uppercase">
                         <span>Show</span>
                     </h6>
-                    <ul class="nav flex-column mb-auto">
-                        <li class="nav-item" v-for="source in sources">
-                            <a class="nav-link d-flex align-items-center gap-2" href="#">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" :value="source.name"
-                                           @change="select">
-                                    <label class="form-check-label">
-                                        <span v-text="source.name"></span>
-                                    </label>
-                                </div>
-                            </a>
+                    <div class="dropdown nav mb-auto mx-3 my-2 flex-column">
+                        <button class="btn btn-danger dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                            <span v-text="indicator"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#" @click="changeIndicator('Risk Score')">Risk Score</a>
+                            </li>
+                            <li><a class="dropdown-item" href="#" @click="changeIndicator('Incidence')">Incidence</a>
+                            </li>
+                            <li><a class="dropdown-item" href="#" @click="changeIndicator('Sentiment')">Sentiment</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <ul class="nav flex-column mb-auto mt-2">
+                        <li class="nav-item d-flex align-items-center px-3" v-for="source in sources">
+                            <div class="form-check d-flex align-items-center gap-2">
+                                <input class="form-check-input" type="checkbox" :value="source.name"
+                                       @change="select">
+                                <label class="form-check-label">
+                                    <span v-text="source.name"></span>
+                                    <a href="#" @click="info(source.name)">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16"
+                                             height="16" style="fill: currentColor">
+                                            <path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.92 6.085h.001a.749.749 0 1 1-1.342-.67c.169-.339.436-.701.849-.977C6.845 4.16 7.369 4 8 4a2.756 2.756 0 0 1 1.637.525c.503.377.863.965.863 1.725 0 .448-.115.83-.329 1.15-.205.307-.47.513-.692.662-.109.072-.22.138-.313.195l-.006.004a6.24 6.24 0 0 0-.26.16.952.952 0 0 0-.276.245.75.75 0 0 1-1.248-.832c.184-.264.42-.489.692-.661.103-.067.207-.132.313-.195l.007-.004c.1-.061.182-.11.258-.161a.969.969 0 0 0 .277-.245C8.96 6.514 9 6.427 9 6.25a.612.612 0 0 0-.262-.525A1.27 1.27 0 0 0 8 5.5c-.369 0-.595.09-.74.187a1.01 1.01 0 0 0-.34.398ZM9 11a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z"></path>
+                                        </svg>
+                                    </a>
+                                </label>
+                            </div>
                         </li>
                     </ul>
 
+                    <span class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-body-secondary">
+                        <span>Click a region on the map to view figures for that region</span>
+                    </span>
                     <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-body-secondary text-uppercase">
-                        <span>View source data</span>
+                        <span>source data</span>
                     </h6>
                     <ul class="nav flex-column mb-auto">
                         <li class="nav-item" v-for="source in included">
-                            <a class="nav-link d-flex align-items-center gap-2" :href="source.url">
+                            <a class="nav-link d-flex align-items-center gap-2 py-1" :href="source.url">
                                 <span v-text="source.name"></span>
                             </a>
                         </li>
-                        <li class="nav-item" v-for="source in selected">
-                            <a class="nav-link d-flex align-items-center gap-2" :href="source.url">
+                        <li class="nav-item" v-for="source in sources">
+                            <a class="nav-link d-flex align-items-center gap-2 py-1" :href="source.url">
                                 <span v-text="source.name"></span>
                             </a>
                         </li>
@@ -246,46 +185,82 @@
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                 <div class="btn-toolbar mb-2 mb-md-0">
                     <div class="btn-group me-2">
-                        <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
-                        <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
-                    </div>
-                    <div class="dropdown">
-                        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
-                                aria-expanded="false">
-                            Risk Score
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Incidence</a></li>
-                            <li><a class="dropdown-item" href="#">Sentiment</a></li>
-                        </ul>
+                        <button type="button" class="btn btn-sm btn-outline-primary">Share</button>
+                        <button type="button" class="btn btn-sm btn-outline-primary">Export</button>
                     </div>
                 </div>
             </div>
-
-            <div class="leaflet-pane leaflet-popup-pane" id="wordcloud" v-show="showSource('tweets')">
-                <div class="leaflet-popup leaflet-zoom-animated"
-                     style="opacity: 1; transform: translate3d(557px, 698px, 0px); top: -520px; left: -250px">
-                    <div class="leaflet-popup-content-wrapper" style="border-radius: 163px;   overflow: hidden;">
-                        <div class="leaflet-popup-content" style="width: 300px;">
-                            <img width="100%"
-                                 src="../archive/collate_data/20230704-150054-df8724c3/wordcloud_London_.png"/>
+            <!--            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">-->
+            <!--                <div class="" id="wordcloud" v-show="showSource('Tweets')" style="z-index:700">-->
+            <!--                    <div class=""-->
+            <!--                         style="opacity: 1; transform: translate3d(557px, 698px, 0px); top: -520px; left: -250px">-->
+            <!--                        <div class="leaflet-popup-content-wrapper" style="border-radius: 163px; overflow: hidden; background: white;-->
+            <!--    color: #333;-->
+            <!--    box-shadow: 0 3px 14px rgba(0,0,0,0.4);">-->
+            <!--                            <div class="leaflet-popup-content" style="width: 300px;">-->
+            <!--                                <img width="100%"-->
+            <!--                                     src="../archive/collate_data/20230704-150054-df8724c3/wordcloud_London_.png"/>-->
+            <!--                            </div>-->
+            <!--                        </div>-->
+            <!--                    </div>-->
+            <!--                </div>-->
+            <!--                <div class="leaflet-pane leaflet-popup-pane" id="interview" v-show="showSource('Interviews')">-->
+            <!--                    <div class="leaflet-popup leaflet-zoom-animated"-->
+            <!--                         style="opacity: 1; transform: translate3d(557px, 698px, 0px); top: -520px; left: 250px">-->
+            <!--                        <div class="leaflet-popup-content-wrapper" style="border-radius: 163px;   overflow: hidden;">-->
+            <!--                            <div class="leaflet-popup-content" style="width: 300px;">-->
+            <!--                                <img width="100%"-->
+            <!--                                     src="../archive/collate_data/20230704-150054-df8724c3/wordcloud_London_.png"/>-->
+            <!--                            </div>-->
+            <!--                        </div>-->
+            <!--                    </div>-->
+            <!--                </div>-->
+            <!--                <div class="leaflet-pane leaflet-popup-pane" id="epidemia" v-show="showSource('projections')">-->
+            <!--                    <div class="leaflet-popup leaflet-zoom-animated"-->
+            <!--                         style="opacity: 1; transform: translate3d(557px, 698px, 0px); top: -520px; left: 250px">-->
+            <!--                        <div class="leaflet-popup-content-wrapper" style="border-radius: 163px;   overflow: hidden;">-->
+            <!--                            <div class="leaflet-popup-content" style="width: 300px;">-->
+            <!--                                <img width="100%"-->
+            <!--                                     src="../archive/epidemia_model/20230704-175419-ca8fcc8a/plot_cases.png"-->
+            <!--                                />-->
+            <!--                            </div>-->
+            <!--                        </div>-->
+            <!--                    </div>-->
+            <!--                </div>-->
+            <!--            </div>-->
+            <div class="d-flex flex-row bd-highlight mb-3">
+                <div id="map" @vue:mounted="mounted"></div>
+                <div class="mx-3">
+                    <div class="flex-column" id="wordcloud" style="z-index:700">
+                        <div style="opacity: 1;">
+                            <div style="border-radius: 163px; overflow: hidden; background: white;
+    color: #333;
+    box-shadow: 0 3px 14px rgba(0,0,0,0.4);">
+                                <div class="leaflet-popup-content" style="width: 300px;">
+                                    <img width="100%"
+                                         src="../archive/collate_data/20230704-150054-df8724c3/wordcloud_London_.png"/>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
-            <div class="leaflet-pane leaflet-popup-pane" id="interview" v-show="showSource('interviews')">
-                <div class="leaflet-popup leaflet-zoom-animated"
-                     style="opacity: 1; transform: translate3d(557px, 698px, 0px); top: -520px; left: 250px">
-                    <div class="leaflet-popup-content-wrapper" style="border-radius: 163px;   overflow: hidden;">
-                        <div class="leaflet-popup-content" style="width: 300px;">
-                            <img width="100%"
-                                 src="../archive/collate_data/20230704-150054-df8724c3/wordcloud_London_.png"/>
+                    <div class="flex-column mt-4" id="interviews" style="z-index:700">
+                        <div style="opacity: 1;">
+                            <div style="border-radius: 163px; overflow: hidden; background: white;
+    color: #333;
+    box-shadow: 0 3px 14px rgba(0,0,0,0.4);">
+                                <div class="leaflet-popup-content" style="width: 300px;">
+                                    <img width="100%"
+                                         src="../archive/collate_data/20230704-150054-df8724c3/wordcloud_London_.png"/>
+                                </div>
+                            </div>
                         </div>
                     </div>
+
                 </div>
             </div>
-            <div id="map" @vue:mounted="mounted"></div>
-
+            <div style="width:750px">
+                <img style="width:100%;" src="../archive/epidemia_model/20230704-175419-ca8fcc8a/plot_cases.png"/>
+            </div>
 
         </main>
     </div>
@@ -320,6 +295,10 @@
         if (name == "London") return "#800026";
         let n = Math.random();
 
+        return getColorForNum(n);
+    }
+
+    function getColorForNum(n) {
         return n > 0.9 ? '#BD0026' :
             n > 0.8 ? '#E31A1C' :
                 n > 0.7 ? '#FC4E2A' :
@@ -337,15 +316,15 @@
 
     const app = createApp({
         sources: [
-            {name: "tweets", url: "", artefact: "", selected: false},
-            {name: "interviews", url: "", artefact: "", selected: false},
-            {name: "vaccination coverage", url: "", artefact: "", selected: false},
-            {name: "projections", url: "", artefact: "", selected: false}
+            {name: "Tweets", url: "", artefact: "", selected: false},
+            {name: "Interviews", url: "", artefact: "", selected: false},
+            {name: "Vaccination coverage", url: "", artefact: "", selected: false},
+            {name: "Projections", url: "", artefact: "", selected: false}
         ],
         included: [
-            {name: "risk score", url: "", artefact: "", selected: false},
-            {name: "cases", url: "", artefact: "", selected: false},
-            {name: "sentiment", url: "", artefact: "", selected: false}
+            {name: "Risk Score", url: "", artefact: "", selected: false},
+            {name: "Incidence", url: "", artefact: "", selected: false},
+            {name: "Sentiment", url: "", artefact: "", selected: false}
         ],
         map: L.map('map').setView([55.3781, -3.4360], 6),
         tiles: L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/toner-lite/{z}/{x}/{y}{r}.{ext}', {
@@ -355,10 +334,18 @@
             maxZoom: 20,
             ext: 'png'
         }),
+        legend: L.control({position: 'topleft'}),
         show: false,
         feature: "",
+        indicator: "Risk Score",
         get selected() {
             return this.sources.filter(s => s.selected)
+        },
+        changeIndicator(newInd) {
+            this.indicator = newInd;
+            this.geojson.eachLayer(function (layer) {
+                layer.setStyle({fillColor: getColor(layer.feature.properties.EER13NM)})
+            });
         },
         showSource(name) {
             return this.feature == "London" && this.show && this.sources.find(s => s.name == name && s.selected) != null
@@ -396,7 +383,23 @@
                     })
                 }
             });
-            this.geojson.addTo(this.map)
+            this.geojson.addTo(this.map);
+            this.legend.onAdd = function (map) {
+
+                var div = L.DomUtil.create('div', 'info legend'),
+                    grades = [0, 0.2, 0.4, 0.6, 0.8, 1],
+                    labels = [];
+
+                // loop through our density intervals and generate a label with a colored square for each interval
+                for (var i = 0; i < grades.length; i++) {
+                    div.innerHTML +=
+                        '<i style="background:' + getColorForNum(grades[i] + 0.1) + '"></i> ' +
+                        grades[i] + '<br>';
+                }
+
+                return div;
+            };
+            this.legend.addTo(this.map);
             getGeoData('https://raw.githubusercontent.com/martinjc/UK-GeoJSON/master/json/electoral/gb/topo_eer.json')
                 .then(data => this.geojson.addData(data));
         }
