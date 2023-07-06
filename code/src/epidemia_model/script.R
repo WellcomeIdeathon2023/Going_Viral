@@ -13,9 +13,9 @@ dat = dat[which(!is.na(dat$tidy_loc1)),]
 
 # Make a wide data frame for cases for each region per day for easy cleaning
 case_dat = dat %>% 
-  select(-positive, -negative) %>% 
-  spread(key = tidy_loc1, value = case_count) %>%
-  full_join(tmp_date, by = "date") 
+  dplyr::select(-positive, -negative) %>% 
+  tidyr::spread(key = tidy_loc1, value = case_count) %>%
+  dplyr::full_join(tmp_date, by = "date") 
 case_dat = case_dat[order(case_dat$date),]
 
 # Make NAs zero
@@ -25,36 +25,36 @@ case_dat[is.na(case_dat)] = 0
 # to allow seeding
 # End date 22nd December 2020 as that's when data zeros in London "2020-12-22"
 case_dat = case_dat %>%
-  filter(date > as.Date("2020-07-01") & date <= as.Date("2020-12-22")) %>%
-  select(-"England", -"Northern Ireland", -"Scotland", -"Wales")
+  dplyr::filter(date > as.Date("2020-07-01") & date <= as.Date("2020-12-22")) %>%
+  dplyr::select(-"England", -"Northern Ireland", -"Scotland", -"Wales")
 
 # Gather the data - filter to just London for prototype
-case_dat = gather(case_dat, key = "region", value = "cases", -date) %>%
+case_dat = tidyr::gather(case_dat, key = "region", value = "cases", -date) %>%
   filter(region == "London")
 
 # This would need to change if have weeks over 1 year
-case_dat$week <- week(case_dat$date)
+case_dat$week <- lubridate::week(case_dat$date)
 
 # Transmission model -  currently weekly varying random walk.
 # Would add in YouGov / mobility / environmental / other behavioral data 
 # here to parameterise model following research from Christian Morgenstern's 
 # PhD at Imperial
-rt <- epirt(formula = R(region, date) ~ 1 + rw(week, prior_scale = 0.01),
+rt <- epidemia::epirt(formula = R(region, date) ~ 1 + rw(week, prior_scale = 0.01),
             prior_intercept = normal(log(2), 0.2), link = 'log')
 
 # Observation model
 # Assumes likely to test equally across 4 days after being infected
-obs <- epiobs(formula = cases ~ 1, link = "identity",
+obs <- epidemia::epiobs(formula = cases ~ 1, link = "identity",
               i2o = rep(.25,4))
 
 # Infections model
 # Should add in population weighting 
-inf <- epiinf(gen = EuropeCovid$si, seed_days = 6)
+inf <- epidemia::epiinf(gen = EuropeCovid$si, seed_days = 6)
 
 args <- list(rt = rt, inf = inf, obs = obs, data = case_dat, seed = 12345,
              iter = n_iter, control = list(max_treedepth = 15))
 
-fm <- do.call(epim, args)
+fm <- do.call(epidemia::epim, args)
 
 # Forecast assuming constant weekly effect
 forecast_length = 7
@@ -65,7 +65,7 @@ additional_data = data.frame(date = as.Date(as.Date("2020-12-23"):(as.Date("2020
                              week = rep(max(case_dat$week), forecast_length))
 
 new_dat = rbind(new_dat, additional_data)
-ggsave("plot_rt.png", plot_rt(fm, newdata = new_dat))
-ggsave("plot_cases.png", plot_obs(fm, type = "cases", newdata = new_dat))
+ggsave("plot_rt.png", epidemia::plot_rt(fm, newdata = new_dat))
+ggsave("plot_cases.png", epidemia::plot_obs(fm, type = "cases", newdata = new_dat))
 
 save(case_dat, new_dat, fm, file = "model_run.RData")
