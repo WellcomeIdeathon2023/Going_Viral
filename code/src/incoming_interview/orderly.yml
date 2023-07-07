@@ -9,4 +9,5 @@ artefacts:
 
 packages:
   - tidytext
+  - lubridate
 
