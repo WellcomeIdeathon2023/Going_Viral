@@ -90,4 +90,8 @@ risk_scores$classify = ifelse(risk_scores$total_score < 1, "low",
 print(risk_scores)
 
 # Selects the different data sources the user wants to generate the score
+risk_scores_json = toJSON(risk_scores)
+write(risk_scores_json, "risk_score.json")
+
 saveRDS(risk_scores, file = "risk_score.rds")
+
