@@ -3,3 +3,5 @@ df <- data.frame(date = lubridate::as_date(lubridate::dmy("01-09-2020"):lubridat
 df$coverage <- generate_vaccination_coverage(nsteps=nrow(df))
 
 saveRDS(df, "dat.rds")
+
+rmarkdown::render("blurb.Rmd")

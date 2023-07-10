@@ -8,7 +8,7 @@ if (date == "NA"){
   # Set date to maximum data in data set if not given
   report_date = max(case_dat$date) 
 } else (
-  report_date = as.date(date, origin='1970-01-01')
+  report_date = as.Date(date, origin='1970-01-01')
 )
 
 # Select rt values for given date. 

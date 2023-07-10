@@ -2,10 +2,13 @@
 script: script.R
 
 
-artefacts:    
-  data:
-    description: Vaccination coverage (radomly generated) by date
-    filenames: dat.rds
+artefacts:
+    - data:
+        description: Vaccination coverage (radomly generated) by date
+        filenames: dat.rds
+    - report:
+        description: Simple description
+        filenames: blurb.html
 
 
 packages:
@@ -13,3 +16,6 @@ packages:
 
 sources:
   generate_vaccination_coverage.R
+  
+resources:
+  blurb.Rmd
