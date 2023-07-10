@@ -15,13 +15,16 @@ parameters:
 artefacts: 
   - data:
       description: risk score
-      filenames: risk_score.rds
+      filenames: 
+      - risk_score.rds
+      - risk_score.json
       
 packages:
   - ggplot2
   - dplyr
   - tidyr
   - epidemia
+  - rjson
   
 depends:
  collate_data:
