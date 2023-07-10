@@ -1,5 +1,6 @@
 vaxtweets_dat <- readRDS("vaxtweets_dat.rds")
 globaldothealth_dat <- readRDS("globaldothealth_dat.rds")
+vaccinationcoverage_dat <- readRDS("vaccinationcoverage_dat.rds")
 
 # filter to UK only
 vaxtweets_dat <- vaxtweets_dat %>% filter(user_in_uk)
@@ -52,8 +53,14 @@ combined_dat <- globaldothealth_dat %>%
   rename(tidy_loc1 = location.administrativeAreaLevel1) %>%
   full_join(vax_sentiment %>% filter(!is.na(sentiment)) %>% tidyr::pivot_wider(names_from=sentiment, values_from=sent_count))
 
+# Filter data to 1st July 2020 to 22nd December 2020 as when have case data for London
+combined_dat <- combined_dat %>%
+  left_join(vaccinationcoverage_dat, by="date") %>% 
+  filter(date > as.Date("2020-06-30") & date < as.Date("2020-12-23"))
+
 saveRDS(combined_dat, "combined_dat.rds")
 
+# comparison plot over time
 p <- combined_dat %>%
   group_by(date) %>%
   summarise(case_count = sum(case_count, na.rm= TRUE), positive= sum(positive, na.rm = TRUE), negative=sum(negative, na.rm = TRUE)) %>%
