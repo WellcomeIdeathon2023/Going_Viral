@@ -34,6 +34,16 @@
             margin-right: 8px;
             opacity: 0.7;
         }
+
+        .dot {
+            height: 100px;
+            width: 100px;
+            background-color: #bbb;
+            border-radius: 50%;
+            display: inline-block;
+            display: flex;
+            margin: 0 auto;
+        }
     </style>
 </head>
 <body>
@@ -125,7 +135,7 @@
             <div class="offcanvas-lg offcanvas-end bg-body-tertiary" tabindex="-1" id="sidebarMenu"
                  aria-labelledby="sidebarMenuLabel">
                 <div class="offcanvas-header">
-                    <h5 class="offcanvas-title" id="sidebarMenuLabel">QQAVERS</h5>
+                    <h5 class="offcanvas-title" id="sid ebarMenuLabel">QQAVERS</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#sidebarMenu"
                             aria-label="Close"></button>
                 </div>
@@ -174,10 +184,8 @@
                     </div>
                     <div>
                         <select class="form-select" aria-label="country">
-                            <option selected>UK</option>
-                            <option value="1">One</option>
-                            <option value="2">Two</option>
-                            <option value="3">Three</option>
+                            <option>UK</option>
+                            <option v-for="country in countries">{{country.name}}</option>
                         </select>
                     </div>
                     <div class="mx-2">
@@ -194,16 +202,15 @@
             </div>
             <div class="d-flex flex-row bd-highlight mb-3">
                 <div id="map" @vue:mounted="mounted"></div>
-                <div class="mx-3">
+                <div class="mx-3" v-show="show">
+                    <span>Selected Area: <span v-text="feature" class="fw-bold"></span></span>
                     <div class="flex-column" id="wordcloud" style="z-index:700" v-show="show">
                         <div style="opacity: 1;">
-                            <div style="border-radius: 163px; overflow: hidden; background: white;
-    color: #333;
-    box-shadow: 0 3px 14px rgba(0,0,0,0.4);">
-                                <div class="leaflet-popup-content" style="width: 300px;">
-                                    RISK SCORE: 10
-                                </div>
-                            </div>
+                            <span class="dot my-3" :style="{'background-color': activeColor}">
+                                <span class="d-flex align-items-center" style="margin: 0 auto;">
+                                    Risk Score: <span v-text="risk"></span>
+                                </span>
+                            </span>
                         </div>
                     </div>
                     <div class="flex-column mt-4" id="interviews" style="z-index:700" v-show="show">
@@ -257,6 +264,7 @@
     };
 
     const app = createApp({
+        risk: 0,
         countries: countries,
         sources: [
             {name: "Vaccine Sentiment", url: "", artefact: "", selected: false},
@@ -264,6 +272,7 @@
             {name: "Incidence", url: "", artefact: "", selected: false},
             {name: "Risk Score", url: "", artefact: "", selected: false}
         ],
+        scores: [],
         map: L.map('map').setView([55.3781, -3.4360], 6),
         tiles: L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/toner-lite/{z}/{x}/{y}{r}.{ext}', {
             attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
@@ -275,6 +284,9 @@
         legend: L.control({position: 'topleft'}),
         show: false,
         feature: "",
+        get activeColor() {
+            return getColor(this.feature)
+        },
         indicator: "Risk Score",
         get selected() {
             return this.sources.filter(s => s.selected)
@@ -338,8 +350,10 @@
                 return div;
             };
             this.legend.addTo(this.map);
-            getGeoData('https://raw.githubusercontent.com/martinjc/UK-GeoJSON/master/json/electoral/gb/topo_eer.json')
+            getData('https://raw.githubusercontent.com/martinjc/UK-GeoJSON/master/json/electoral/gb/topo_eer.json')
                 .then(data => this.geojson.addData(data));
+            getData('http://localhost:8888/api/v2/reports/risk_score/versions/20230704-141834-36f5479f/artefacts/dat.rds')
+                .then(data => this.scores = data);
         }
     });
 
