@@ -1,0 +1,12 @@
+---
+title: "Vaccination Coverage"
+author: "Team Going Viral"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+This generates simulated vaccination coverage data, the function is also available in the simulated data repository. The information is proportional coverage by date.
