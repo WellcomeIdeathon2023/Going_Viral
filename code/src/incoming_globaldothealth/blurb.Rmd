@@ -1,0 +1,12 @@
+---
+title: "Global dot health data"
+author: "Team Going Viral"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+This is data taken from the global dot health dataset which provides numbers of cases by country.
