@@ -18,14 +18,27 @@ rt = rt %>%
 # Rt risk score contribution.  Plus one if lower 90% CI is above 1 and if lower
 # 30% CI is above 1.(Basically +2 if 90% > 1 and +1 if only 30% > 1)
 rt$score = ifelse(rt$lower > 1, 1, 0) 
+rt_collate = rt %>% 
+  dplyr::filter(tag == "90% CI")  %>%
+  dplyr::select(group, lower) %>% 
+  dplyr::mutate(type = "Lower 90% credible interval")
+names(rt_collate) <- c("group", "value", "type")
 rt = rt %>% dplyr::group_by(group) %>%
   dplyr::summarise(score = sum(score))
 
 # Consider case projections for the next week
+cases_collate =  incidence %>% 
+  dplyr::filter(date == report_date) %>%
+  dplyr::select(group, median) %>% 
+  dplyr::mutate(type = "Cases on date of report")
+names(rt_collate) <- c("group", "value", "type")
 cases =  incidence %>% 
   dplyr::filter(date > report_date) %>% 
   dplyr::group_by(group) %>%
   dplyr::summarise(daily_mean = mean(median))
+forecast_collate =  cases %>% 
+  dplyr::mutate(type = "Mean daily forecast for next week")
+names(forecast_collate) <- c("group", "value", "type")
 # Weekly forecast score contribution. Plus one if mean increase is greater than 
 # 100 (probably would want to be population weighted), minus one if 0 cases are 
 # forecast.  Could also incorporate if their are cases in the neighbouring regions.
@@ -37,6 +50,9 @@ cases = cases %>% dplyr::select(-daily_mean)
 coverage = comb_data %>% 
   dplyr::select(date, tidy_loc1, coverage) %>%
   dplyr::filter(date >= report_date)
+coverage_collate = coverage %>% ungroup %>% select(tidy_loc1, coverage) %>%
+  dplyr::mutate(type = "Vaccine coverage")
+names(coverage_collate) <- c("group", "value", "type")
 # If coverage is less than 25% increase risk score by 2, if less than 50% increase
 # by 1. If vaccination is 95% or more decrease risk score by 1.
 coverage$score = ifelse(coverage$coverage < 0.25, 2, 
@@ -60,6 +76,10 @@ sentiment = comb_data %>%
   dplyr::mutate(ratio = total_positive / total_negative)
 # If ratio is > 1 and more positive sentiment than negative -1 from score.
 # If ratio is < 1 and more negative sentiment that positive +1 from score.
+sentiment_collate = sentiment %>%  filter(!is.na(tidy_loc1)) %>%
+  select(tidy_loc1, ratio) %>%
+  mutate(type = "Ratio of positive tweets to negative tweets")
+names(sentiment_collate) <- c("group", "value", "type")
 sentiment$score = ifelse(sentiment$ratio > 1, -1, 1)
 sentiment$score[is.na(sentiment$score)] = 0
 sentiment = sentiment[which(!is.na(sentiment$tidy_loc1)),]
