@@ -131,21 +131,14 @@
                 </div>
                 <div class="offcanvas-body d-md-flex flex-column p-0 pt-lg-3 overflow-y-auto">
 
-                    <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mb-1 text-body-secondary text-uppercase">
-                        <span>Show</span>
-                    </h6>
-                    <div class="dropdown nav mb-auto mx-3 my-2 flex-column">
+                    <div class="dropdown nav mb-auto mx-3 flex-column">
                         <button class="btn btn-danger dropdown-toggle" type="button" data-bs-toggle="dropdown"
                                 aria-expanded="false">
                             <span v-text="indicator"></span>
                         </button>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#" @click="changeIndicator('Risk Score')">Risk Score</a>
-                            </li>
-                            <li><a class="dropdown-item" href="#" @click="changeIndicator('Incidence')">Incidence</a>
-                            </li>
-                            <li><a class="dropdown-item" href="#" @click="changeIndicator('Vaccine Sentiment')">Vaccine
-                                Sentiment</a>
+                            <li v-for="source in sources"><a class="dropdown-item" href="#"
+                                                             @click="changeIndicator(source.name)">{{source.name}}</a>
                             </li>
                         </ul>
                     </div>
@@ -190,37 +183,30 @@
                     <div class="mx-2">
                         <input id="datepicker-start" class="datepicker" width="200"/>
                     </div>
-                    <div>
-                        <input id="datepicker-end" class="datepicker" width="200"/>
-                    </div>
                     <script>
                         $('#datepicker-start').datepicker({
                             uiLibrary: 'bootstrap5'
                         });
                         $('#datepicker-start').val("07/12/2023");
-                        $('#datepicker-end').datepicker({
-                            uiLibrary: 'bootstrap5'
-                        });
-                        $('#datepicker-end').val("07/12/2023");
+
                     </script>
                 </div>
             </div>
             <div class="d-flex flex-row bd-highlight mb-3">
                 <div id="map" @vue:mounted="mounted"></div>
                 <div class="mx-3">
-                    <div class="flex-column" id="wordcloud" style="z-index:700">
+                    <div class="flex-column" id="wordcloud" style="z-index:700" v-show="show">
                         <div style="opacity: 1;">
                             <div style="border-radius: 163px; overflow: hidden; background: white;
     color: #333;
     box-shadow: 0 3px 14px rgba(0,0,0,0.4);">
                                 <div class="leaflet-popup-content" style="width: 300px;">
-                                    <img width="100%"
-                                         src="../archive/collate_data/20230704-150054-df8724c3/wordcloud_London_.png"/>
+                                    RISK SCORE: 10
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="flex-column mt-4" id="interviews" style="z-index:700">
+                    <div class="flex-column mt-4" id="interviews" style="z-index:700" v-show="show">
                         <div style="opacity: 1;">
                             <div style="border-radius: 163px; overflow: hidden; background: white;
     color: #333;
@@ -235,7 +221,7 @@
 
                 </div>
             </div>
-            <div style="width:750px">
+            <div style="width:750px" v-show="show">
                 <img style="width:100%;" src="../archive/epidemia_model/20230704-175419-ca8fcc8a/plot_cases.png"/>
             </div>
 
@@ -246,6 +232,7 @@
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
         integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 <script src="https://unpkg.com/topojson@3.0.2/dist/topojson.min.js"></script>
+<script src="dashboard.js"></script>
 <script type="module">
     import {createApp} from 'https://unpkg.com/petite-vue?module'
 
@@ -269,33 +256,11 @@
         return new L.TopoJSON(data, options);
     };
 
-    function getColor(name) {
-        if (name == "London") return "#800026";
-        let n = Math.random();
-
-        return getColorForNum(n);
-    }
-
-    function getColorForNum(n) {
-        return n > 0.9 ? '#BD0026' :
-            n > 0.8 ? '#E31A1C' :
-                n > 0.7 ? '#FC4E2A' :
-                    n > 0.6 ? '#FD8D3C' :
-                        n > 0.5 ? '#FEB24C' :
-                            n > 0.4 ? '#FED976' :
-                                '#FFEDA0';
-    }
-
-    async function getGeoData(url) {
-        let response = await fetch(url);
-        let data = await response.json();
-        return data;
-    }
-
     const app = createApp({
+        countries: countries,
         sources: [
             {name: "Vaccine Sentiment", url: "", artefact: "", selected: false},
-            {name: "Vaccination coverage", url: "", artefact: "", selected: false},
+            {name: "Vaccination Coverage", url: "", artefact: "", selected: false},
             {name: "Incidence", url: "", artefact: "", selected: false},
             {name: "Risk Score", url: "", artefact: "", selected: false}
         ],
@@ -377,15 +342,15 @@
                 .then(data => this.geojson.addData(data));
         }
     });
-    function tooltip(name) {
-        return `<div>${name}</div>`
-    }
+
     app.directive('tooltip', ctx => {
         const t = new bootstrap.Tooltip(ctx.el, {
-            title:  tooltip(ctx.get()),
+            title: tooltip(ctx.get()),
             html: true
         });
-        ctx.el.addEventListener('mouseover', function() {t.show()});
+        ctx.el.addEventListener('mouseover', function () {
+            t.show()
+        });
     });
     app.mount();
 
