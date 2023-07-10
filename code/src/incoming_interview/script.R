@@ -26,3 +26,5 @@ df <- data.frame(interview=int,
                  date = sample(date_range, size=100, replace = TRUE))
 
 saveRDS(df, "dat.rds")
+
+rmarkdown::render("blurb.Rmd")

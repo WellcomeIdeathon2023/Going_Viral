@@ -12,3 +12,5 @@ cases <- cases %>%
   summarise(count = n())
 
 saveRDS(cases, "dat.rds")
+
+rmarkdown::render("blurb.Rmd")

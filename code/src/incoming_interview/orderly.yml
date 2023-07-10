@@ -6,7 +6,13 @@ artefacts:
       description: Fake interview quotes
       filenames:
         dat.rds
+  - report:
+      description: brief description
+      filenames:
+        blurb.html
 
 packages:
   - tidytext
 
+resources:
+  - blurb.Rmd

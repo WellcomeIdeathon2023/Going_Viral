@@ -6,13 +6,18 @@ parameters:
       default: "GB"
 
 
-artefacts: 
-  data:
-    description: Downloaded cases from global dot health (aggregated by days and 3rd admin unit)
-    filenames:
-      - dat.rds
+artefacts:
+  - data:
+        description: Downloaded cases from global dot health (aggregated by days and 3rd
+          admin unit)
+        filenames: dat.rds
+  - report:
+        description: Simple description
+        filenames: blurb.html
       
 packages:
   - dplyr
   - globaldothealth
 
+resources:
+  - blurb.Rmd
