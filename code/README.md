@@ -36,5 +36,5 @@ To run OW first make sure you have initialised the `orderly` database:
 Then from a bash terminal:
 ```
 docker pull vimc/orderly-web-standalone:master
-docker run --rm -p 8888:8888 -v $PWD:/orderly vimc/orderly-web-standalone:master
+docker run --rm -p 8888:8888 -v $PWD:/orderly -v $PWD/dash/config:/etc/orderly/web -v $PWD/dashlogo:/static/public/img/logo vimc/orderly-web-standalone:master
 ```

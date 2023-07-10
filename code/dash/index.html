@@ -161,7 +161,7 @@
                     </h6>
                     <ul class="nav flex-column mb-auto">
                         <li class="nav-item flex-row d-flex flex-nowrap" v-for="source in sources">
-                            <a class="flex-column nav-link d-flex gap-2 py-1" :href="source.url">
+                            <a class="flex-column nav-link d-flex gap-2 py-1" :href="source.url" target="_blank">
                                 <span v-text="source.name"></span>
                             </a>
                             <svg class="flex-column d-flex" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"
@@ -291,10 +291,10 @@
         risk: 0,
         countries: countries,
         sources: [
-            {name: "Vaccine Sentiment", url: "", artefact: "", selected: false},
-            {name: "Vaccination Coverage", url: "", artefact: "", selected: false},
-            {name: "Incidence", url: "", artefact: "", selected: false},
-            {name: "Risk Score", url: "", artefact: "", selected: false}
+            {name: "Vaccine Sentiment", url: "http://localhost:8888/report/incoming_vaxtweets/latest", artefact: "", selected: false},
+            {name: "Vaccination Coverage", url: "http://localhost:8888/report/incoming_vaccinationcoverage/latest", artefact: "", selected: false},
+            {name: "Incidence", url: "http://localhost:8888/report/epidemia_model/latest", artefact: "", selected: false},
+            {name: "Risk Score", url: "http://localhost:8888/report/risk_score/latest", artefact: "", selected: false}
         ],
         scores: [{region: "London", risk: 10, coverage: 0.10}, {}],
         map: L.map('map').setView([55.3781, -3.4360], 6),
