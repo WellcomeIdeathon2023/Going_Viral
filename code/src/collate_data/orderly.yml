@@ -33,6 +33,7 @@ packages:
   - tidyr
   - ggplot2
   - reshape2
+  - rjson
 
 depends:
  incoming_vaxtweets:
