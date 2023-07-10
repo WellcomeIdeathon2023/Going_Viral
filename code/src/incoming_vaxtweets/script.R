@@ -5,3 +5,5 @@ df <- df %>% mutate(user_in_uk = grepl("United Kingdom|GB|UK|England|London", us
 df <- df %>% mutate(date = lubridate::dmy_hm(date))
 
 saveRDS(df, "dat.rds")
+
+rmarkdown::render("blurb.Rmd")

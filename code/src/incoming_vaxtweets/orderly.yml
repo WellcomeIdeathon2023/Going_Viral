@@ -1,10 +1,14 @@
 script: script.R
 
 artefacts: 
-  data:
-    description: Vaccine-related tweets with brief cleaning
-    filenames:
+  - data:
+     description: Vaccine-related tweets with brief cleaning
+     filenames:
         - dat.rds
+  - report:
+     description: Blurb for popups
+     filenames:
+        - blurb.html
 
 packages:
  - dplyr
@@ -13,3 +17,4 @@ packages:
 
 resources:
   - vax_tweets.csv
+  - blurb.Rmd
