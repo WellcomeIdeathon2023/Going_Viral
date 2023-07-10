@@ -72,3 +72,9 @@ p <- combined_dat %>%
   facet_wrap(type~., scales = "free", ncol = 1)
 
 ggsave("sentiment_cases_over_time.png", p)
+
+
+# Saves data as a json
+combined_data_london = collated_data %>% dplyr::filter(group == "London")
+collated_data_json = toJSON(combined_data_london)
+write(collated_data_json, "collated_data_london.json")

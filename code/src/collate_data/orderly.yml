@@ -6,7 +6,9 @@ displayname: Collated data
 artefacts:    
   - data:
       description: Combined, aggregated data
-      filenames: combined_dat.rds
+      filenames: 
+      - combined_dat.rds
+      - collated_data_london.json
       
   - staticgraph:
       description: All figures from exploratory analysis
