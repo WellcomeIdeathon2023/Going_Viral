@@ -7,7 +7,11 @@ parameters:
 artefacts: 
   - data:
       description: model output
-      filenames: model_run.RData
+      filenames: 
+      - rt.rds
+      - incidence.rds
+      - rt.json
+      - incidence.json
   - staticgraph:
       description: Figures from model fit and forecast
       filenames: 
@@ -21,6 +25,7 @@ packages:
   - lubridate
   - tidyr
   - dplyr
+  - rjson
 
 depends:
  collate_data:

@@ -23,7 +23,6 @@ packages:
   - ggplot2
   - dplyr
   - tidyr
-  - epidemia
   - rjson
   
 depends:
@@ -34,5 +33,6 @@ depends:
  epidemia_model:
    id: latest
    use:
-     model_run.RData: model_run.RData
+     rt.rds: rt.rds
+     incidence.rds: incidence.rds
 

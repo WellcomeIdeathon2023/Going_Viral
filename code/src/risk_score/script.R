@@ -1,6 +1,7 @@
 # Loads all the different data sources 
 comb_data = readRDS("combined_dat.rds")
-load("model_run.RData")
+rt = readRDS("rt.rds")
+incidence = readRDS("incidence.rds")
 
 # Choose date to make prediction for
 if (date == "NA"){
@@ -11,7 +12,7 @@ if (date == "NA"){
 )
 
 # Select rt values for given date. 
-rt = plot_rt(fm, newdata = new_dat)$data %>% 
+rt = rt %>% 
   dplyr::filter(date == report_date) %>%
   dplyr::filter(tag != "60% CI") # Only consider 30 and 90% CIs for score metric
 # Rt risk score contribution.  Plus one if lower 90% CI is above 1 and if lower
@@ -21,7 +22,7 @@ rt = rt %>% dplyr::group_by(group) %>%
   dplyr::summarise(score = sum(score))
 
 # Consider case projections for the next week
-cases = epidemia::plot_obs(fm, newdata = new_dat, type = "cases")$layers[[3]]$data %>% 
+cases =  incidence %>% 
   dplyr::filter(date > report_date) %>% 
   dplyr::group_by(group) %>%
   dplyr::summarise(daily_mean = mean(median))

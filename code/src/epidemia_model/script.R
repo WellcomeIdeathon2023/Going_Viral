@@ -68,4 +68,14 @@ new_dat = rbind(new_dat, additional_data)
 ggsave("plot_rt.png", epidemia::plot_rt(fm, newdata = new_dat))
 ggsave("plot_cases.png", epidemia::plot_obs(fm, type = "cases", newdata = new_dat))
 
-save(case_dat, new_dat, fm, file = "model_run.RData")
+rt = epidemia::plot_rt(fm, newdata = new_dat)$data
+incidence = epidemia::plot_obs(fm, newdata = new_dat, type = "cases")$layers[[3]]$data
+
+saveRDS(rt, "rt.RDS")
+saveRDS(incidence, "incidence.RDS")
+
+rt_json = rjson::toJSON(rt)
+write(rt_json, "rt.json")
+incidence_json = rjson::toJSON(incidence)
+write(incidence_json, "incidence.json")
+
