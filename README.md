@@ -33,7 +33,7 @@ The code in this repository is licenced under a permissive [MIT licence](https:/
 
 ### Running
 1. First start OrderlyWeb (the data pipeline app) using docker, from the `code` directory:
-    `docker run `
+    `./run.sh`
 2. Open the dashboard in a browser: [index.html](code/dash/index.html)
 
 Our 'orderly' repository can be found in the code folder. 
