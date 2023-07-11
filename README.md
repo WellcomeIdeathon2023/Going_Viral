@@ -39,3 +39,5 @@ The code in this repository is licenced under a permissive [MIT licence](https:/
 Our 'orderly' repository can be found in the code folder. 
 This includes 2 main folders: src, where you will find our scripts; archive, where you will find our outputs from running the code. 
 There are also guidelines on how to download the orderly R package and which order to run the reports in.
+
+data and results are deliberately empty as src includes an orderly pipeline with everything inbuilt.
