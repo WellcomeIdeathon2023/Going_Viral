@@ -74,3 +74,7 @@ Then from a bash terminal:
    ```
    ./run.sh
    ```
+
+## QQuaVERS Dashboard
+
+To run the user friendly QQuaVERS dashboard app, simply open the file `dash/index.html` in a web browser.
