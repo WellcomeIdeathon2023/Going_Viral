@@ -1,0 +1,46 @@
+script: script.R
+
+parameters:
+    date:
+      default: "NA"
+    use_rt:
+      default: TRUE
+    use_projections:
+      default: TRUE
+    use_vaccine_coverage:
+      default: TRUE
+    use_sentiment:
+      default: TRUE
+      
+artefacts: 
+  - data:
+      description: risk score
+      filenames: 
+      - risk_score.rds
+      - risk_score.json
+      - collated_data.json
+  - report:
+      description: simple description
+      filenames: 
+      - blurb.html
+      
+packages:
+  - ggplot2
+  - dplyr
+  - tidyr
+  - rjson
+  
+
+resources:
+  - blurb.Rmd
+  
+depends:
+ collate_data:
+   id: latest
+   use:
+     combined_dat.rds: combined_dat.rds
+ epidemia_model:
+   id: latest
+   use:
+     rt.rds: rt.rds
+     incidence.rds: incidence.rds

@@ -1,0 +1,40 @@
+script: script.R
+
+parameters:
+    n_iter:
+      default: 100
+      
+artefacts: 
+  - data:
+      description: model output
+      filenames: 
+      - rt.rds
+      - incidence.rds
+      - rt.json
+      - incidence.json
+  - staticgraph:
+      description: Figures from model fit and forecast
+      filenames: 
+      - plot_rt.png
+      - plot_cases.png
+  - report:
+      description: brief description
+      filenames:
+        blurb.html
+
+packages:
+  - epidemia
+  - ggplot2
+  - lubridate
+  - tidyr
+  - dplyr
+  - rjson
+  
+resources:
+  - blurb.Rmd
+
+depends:
+ collate_data:
+   id: latest
+   use:
+     combined_dat.rds: combined_dat.rds

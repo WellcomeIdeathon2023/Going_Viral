@@ -1,0 +1,18 @@
+---
+title: "Epidemia model"
+author: "Team Going Viral"
+date: '`r Sys.Date()`'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Introduction
+
+This task uses the epidemia package (https://imperialcollegelondon.github.io/epidemia/) to fit a renewal type model to covid data generated in the collate_data task.  Using this model fit, we project cases over the time period of a week assuming Rt is fixed.  
+
+# Future methods
+
+This framework has been used previously to include non traditional data sources such as mobility data (https://www.nature.com/articles/s41467-020-19652-6).  Additionally, research is ongoing by Christian Morgenstern to include YouGov survey data.  We propose including these types of data in the full version of the tool -  they are not currently implemented to avoid model convergence issues with using simulated data.
