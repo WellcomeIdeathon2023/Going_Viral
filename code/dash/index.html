@@ -225,7 +225,7 @@
                     <h5 class="text-center">Selected Area: <span v-text="feature" class="fw-bold"></span></h5>
                     <div class="flex-column" id="wordcloud" style="z-index:700" v-show="show">
                         <div style="opacity: 1;">
-                            <a href="http://localhost:8888/report/collate_data/latest"><span class="dot my-3"
+                            <a href="http://localhost:8888/report/collate_data/latest#downloads"><span class="dot my-3"
                                                                                              :style="{'border-color': activeColor}">
                                 <span class="d-flex align-items-center" style="margin: 0 auto;">
                                     Risk Score: <span v-text="risk"></span>
@@ -240,8 +240,8 @@
                                 <div class="leaflet-popup-content" style="margin: 0 auto; width: 300px;border-radius: 163px; overflow: hidden; background: white;
     color: #333;
     box-shadow: 0 3px 14px rgba(0,0,0,0.4);">
-                                    <a href="http://localhost:8888/report/collate_data/latest"><img width="100%"
-                                                                                                    src="../archive/collate_data/20230710-193642-1e3fad7a/wordcloud_London_.png"/>
+                                    <a href="http://localhost:8888/report/collate_data/latest#downloads"><img width="100%"
+                                                                                                    src="../archive/collate_data/20230711-160846-07ebcc01/wordcloud_London_.png"/>
                                     </a>
                                 </div>
                             </div>
@@ -253,7 +253,7 @@
                                 <p>I am qualms about quarantine and I do think my views are heard by politicians.</p>
                             </blockquote>
                             <figcaption class="blockquote-footer">
-                                <a href="http://localhost:8888/report/incoming_interviews/latest">20th June 2020</a>
+                                <a href="http://localhost:8888/report/incoming_interview/latest#downloads" target="_blank">20th June 2020</a>
                             </figcaption>
                         </figure>
                         <figure class="text-end" style="width: 300px; float: right">
@@ -261,12 +261,12 @@
                                 <p>I am wild about COVID19 and I do not think my views are heard by my church.</p>
                             </blockquote>
                             <figcaption class="blockquote-footer">
-                                <a href="http://localhost:8888/report/incoming_interviews/latest">21st June 2020</a>
+                                <a href="http://localhost:8888/report/incoming_interview/latest#downloads" target="_blank">21st June 2020</a>
                             </figcaption>
                         </figure>
                     </div>
                     <div class="flex-column mt-4" v-show="show">
-                        <img src="../archive/epidemia_model/20230711-134523-2f501df6/plot_cases.png" width="600px"/>
+                        <img src="../archive/epidemia_model/20230711-160941-ba286145/plot_cases.png" width="600px"/>
                     </div>
 
                 </div>
@@ -333,28 +333,28 @@
         countries: countries,
         sources: [
 
-            {name: "Risk Score", url: "http://localhost:8888/report/risk_score/latest", artefact: "", selected: false},
+            {name: "Risk Score", url: "http://localhost:8888/report/risk_score/latest#downloads", artefact: "", selected: false},
             {
                 name: "Vaccine Sentiment",
-                url: "http://localhost:8888/report/incoming_vaxtweets/latest",
+                url: "http://localhost:8888/report/incoming_vaxtweets/latest#downloads",
                 artefact: "",
                 selected: false
             },
             {
                 name: "Vaccination Coverage",
-                url: "http://localhost:8888/report/incoming_vaccinationcoverage/latest",
+                url: "http://localhost:8888/report/incoming_vaccinationcoverage/latest#downloads",
                 artefact: "",
                 selected: false
             },
             {
                 name: "Incidence",
-                url: "http://localhost:8888/report/epidemia_model/latest",
+                url: "http://localhost:8888/report/epidemia_model/latest#downloads",
                 artefact: "",
                 selected: false
             },
             {
                 name: "Rt",
-                url: "http://localhost:8888/report/epidemia_model/latest",
+                url: "http://localhost:8888/report/epidemia_model/latest#downloads",
                 artefact: "",
                 selected: false
             }
@@ -488,7 +488,7 @@
                 return div;
             };
 
-            getData('../archive/risk_score/20230710-195851-e18afafa/collated_data.json')
+            getData('../archive/risk_score/20230711-161038-fadb5351/collated_data.json')
                 .then(data => {
                     this.scores = data;
                     this.legend.addTo(this.map);
