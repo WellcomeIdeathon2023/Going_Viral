@@ -251,15 +251,12 @@ function getColor(name) {
   return getColorForNum(n);
 }
 
-function getColorForNum(n) {
+function getColorForNum(n, range, ind) {
   if (n == null) return '#bbb';
-  return n > 0.9 ? '#BD0026' :
-      n > 0.8 ? '#E31A1C' :
-          n > 0.7 ? '#FC4E2A' :
-              n > 0.6 ? '#FD8D3C' :
-                  n > 0.5 ? '#FEB24C' :
-                      n > 0.4 ? '#FED976' :
-                          '#FFEDA0';
+  const normalised = (range[1] - parseFloat(n)) / (range[1] - range[0]);
+  if (ind === "risk" || ind === "cases") return d3.interpolateReds(normalised);
+  if (ind === "sentiment") return d3.interpolateRdYlBu(normalised);
+  return d3.interpolateYlGnBu(normalised);
 }
 
 async function getData(url) {

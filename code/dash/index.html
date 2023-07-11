@@ -36,18 +36,27 @@
             height: 18px;
             float: left;
             margin-right: 8px;
-            opacity: 0.7;
+            opacity: 0.9;
+        }
+
+        .logo {
+            margin: 2px 15px 5px 5px;
+        }
+
+        .navbar-brand {
+            font-size: 24pt !important;
         }
 
         .dot {
-            height: 100px;
-            width: 100px;
-            background-color: #bbb;
+            height: 120px;
+            width: 120px;
             border-radius: 50%;
             display: inline-block;
             display: flex;
             margin: 0 auto;
-            opacity: 0.7;
+            opacity: 0.9;
+            border: 5px solid;
+            box-shadow: 0 3px 14px rgba(0,0,0,0.4);
         }
     </style>
 </head>
@@ -105,8 +114,9 @@
     </ul>
 </div>
 
-<header class="navbar sticky-top bg-dark flex-md-nowrap p-0 shadow" data-bs-theme="dark">
-    <img src="logo/qqavers_logo.png" height="50px" class="m-2"/>
+<header class="px-3 py-2 navbar sticky-top flex-md-nowrap p-0 shadow" data-bs-theme="dark"
+        style="align-items: end; background: black">
+    <img src="logo/qqavers_logo.png" height="75px" class="logo"/>
     <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6 text-white" href="#" style="flex: 1">QQUAVERS</a>
     <ul class="navbar-nav flex-row d-md-none">
         <li class="nav-item text-nowrap">
@@ -145,9 +155,17 @@
                             aria-label="Close"></button>
                 </div>
                 <div class="offcanvas-body d-md-flex flex-column p-0 pt-lg-3 overflow-y-auto">
-
+                    <div class="mb-3 mx-3 ">
+                        <select class="form-select" aria-label="country">
+                            <option>UK</option>
+                            <option v-for="country in countries">{{country.name}}</option>
+                        </select>
+                    </div>
+                    <div class="mx-2 mb-3 mx-3 ">
+                        <input id="datepicker-start" class="datepicker"/>
+                    </div>
                     <div class="dropdown nav mb-auto mx-3 flex-column">
-                        <button class="btn btn-danger dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                        <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown"
                                 aria-expanded="false">
                             <span v-text="indicator"></span>
                         </button>
@@ -160,11 +178,16 @@
                     <span class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-body-secondary">
                         <span>Click a region on the map to view figures for that region</span>
                     </span>
-                    <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-body-secondary text-uppercase">
+                    <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 text-body-secondary text-uppercase">
                         <span>source data</span>
                     </h6>
+                    <span class="sidebar-heading d-flex justify-content-between align-items-center px-3 mb-2 text-body-secondary">
+                        <span>Select sources to include in Risk Score calculation</span>
+                    </span>
                     <ul class="nav flex-column mb-auto">
                         <li class="nav-item flex-row d-flex flex-nowrap" v-for="source in sources">
+                            <input class="form-check-input ms-3" type="checkbox" value="" checked="checked"
+                                   id="flexCheckDefault" style="margin-top: 8px">
                             <a class="flex-column nav-link d-flex gap-2 py-1" :href="source.url" target="_blank">
                                 <span v-text="source.name"></span>
                             </a>
@@ -187,31 +210,22 @@
                         <button type="button" class="btn btn-sm btn-outline-primary">Share</button>
                         <button type="button" class="btn btn-sm btn-outline-primary">Export</button>
                     </div>
-                    <div>
-                        <select class="form-select" aria-label="country">
-                            <option>UK</option>
-                            <option v-for="country in countries">{{country.name}}</option>
-                        </select>
-                    </div>
-                    <div class="mx-2">
-                        <input id="datepicker-start" class="datepicker" width="200"/>
-                    </div>
+
                     <script>
                         $('#datepicker-start').datepicker({
                             uiLibrary: 'bootstrap5'
                         });
                         $('#datepicker-start').val("07/12/2023");
-
                     </script>
                 </div>
             </div>
             <div class="d-flex flex-row bd-highlight mb-3">
                 <div id="map" @vue:mounted="mounted"></div>
                 <div class="mx-3" v-show="show">
-                    <span>Selected Area: <span v-text="feature" class="fw-bold"></span></span>
+                    <h5 class="text-center">Selected Area: <span v-text="feature" class="fw-bold"></span></h5>
                     <div class="flex-column" id="wordcloud" style="z-index:700" v-show="show">
                         <div style="opacity: 1;">
-                            <span class="dot my-3" :style="{'background-color': activeColor}">
+                            <span class="dot my-3" :style="{'border-color': activeColor}">
                                 <span class="d-flex align-items-center" style="margin: 0 auto;">
                                     Risk Score: <span v-text="risk"></span>
                                 </span>
@@ -220,21 +234,39 @@
                     </div>
                     <div class="flex-column mt-4" id="interviews" style="z-index:700" v-show="show">
                         <div style="opacity: 1;">
-                            <div style="border-radius: 163px; overflow: hidden; background: white;
+                            <div style="">
+                                <div class="leaflet-popup-content" style="margin: 0 auto; width: 300px;border-radius: 163px; overflow: hidden; background: white;
     color: #333;
     box-shadow: 0 3px 14px rgba(0,0,0,0.4);">
-                                <div class="leaflet-popup-content" style="width: 300px;">
                                     <img width="100%"
                                          src="../archive/collate_data/20230704-150054-df8724c3/wordcloud_London_.png"/>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <div class="flex-column mt-4" v-show="show">
+                        <figure class="text-end" style="width: 300px">
+                            <blockquote class="blockquote">
+                                <p>I am qualms about quarantine and I do think my views are heard by politicians.</p>
+                            </blockquote>
+                            <figcaption class="blockquote-footer">
+                                20th June 2020
+                            </figcaption>
+                        </figure>
+                        <figure class="text-end" style="width: 300px; float: right">
+                            <blockquote class="blockquote">
+                                <p>I am wild about COVID19 and I do not think my views are heard by my church.</p>
+                            </blockquote>
+                            <figcaption class="blockquote-footer">
+                                21st June 2020
+                            </figcaption>
+                        </figure>
+                    </div>
+                    <div class="flex-column mt-4" v-show="show">
+                        <img src="../archive/epidemia_model/20230710-201509-ece9eb0a/plot_cases.png" width="600px"/>
+                    </div>
 
                 </div>
-            </div>
-            <div style="width:750px" v-show="show">
-                <div id="graph" style="margin-top: 50px;width:700px;height:300px;"></div>
             </div>
 
         </main>
@@ -292,9 +324,13 @@
     };
 
     const app = createApp({
-        risk: 0,
+        get risk() {
+            return this.getScore("Risk Score", this.feature)
+        },
         countries: countries,
         sources: [
+
+            {name: "Risk Score", url: "http://localhost:8888/report/risk_score/latest", artefact: "", selected: false},
             {
                 name: "Vaccine Sentiment",
                 url: "http://localhost:8888/report/incoming_vaxtweets/latest",
@@ -313,7 +349,12 @@
                 artefact: "",
                 selected: false
             },
-            {name: "Risk Score", url: "http://localhost:8888/report/risk_score/latest", artefact: "", selected: false}
+            {
+                name: "Rt",
+                url: "http://localhost:8888/report/epidemia_model/latest",
+                artefact: "",
+                selected: false
+            }
         ],
         scores: null,
         map: L.map('map').setView([55.3781, -3.4360], 6),
@@ -328,7 +369,7 @@
         show: false,
         feature: "",
         get activeColor() {
-            return this.getColor(this.indicator, this.feature)
+            return this.getColor("Risk Score", this.feature)
         },
         indicator: "Risk Score",
         get selected() {
@@ -337,26 +378,40 @@
         ind(indName) {
             switch (indName) {
                 case "Vaccine Sentiment":
-                    return "Ratio of positive tweets to negative tweets";
+                    return "sentiment";
                 case "Risk Score":
-                    return;
-                case "Vaccine Coverage":
-                    return "Vaccine coverage";
+                    return "risk";
+                case "Vaccination Coverage":
+                    return "coverage";
                 case "Incidence":
-                    return "Cases on date of report";
+                    return "cases";
                 case "Rt":
-                    return "Lower 90% credible interval";
+                    return "rt";
                 case "Forecast":
-                    return "Mean daily forecast for next week";
+                    return "forecast";
             }
         },
+        range(indName) {
+            if (this.scores == null) return [];
+            if (indName == "coverage") return [0, 1];
+            const max = Math.max(...this.scores[indName].map(s => parseFloat(s)));
+            const min = Math.min(...this.scores[indName].map(s => parseFloat(s)));
+            return [min, max]
+        },
+        getScore(ind, name) {
+            if (this.scores == null) return null;
+            let i = this.ind(ind);
+            let n = this.scores.group.indexOf(name);
+            if (n > -1)
+                return this.scores[i][n];
+            return null;
+        },
         getColor(newInd, name) {
-            console.log(newInd)
             if (this.scores == null) return getColorForNum(null);
             let i = this.ind(newInd);
             let n = this.scores.group.indexOf(name);
             if (n > -1)
-                return getColorForNum(this.scores.value[n]);
+                return getColorForNum(this.scores[i][n], this.range(i), i);
             else {
                 return getColorForNum(null);
             }
@@ -367,6 +422,8 @@
             this.geojson.eachLayer(function (layer) {
                 layer.setStyle({fillColor: self.getColor(newInd, layer.feature.properties.EER13NM)})
             });
+            this.legend.remove();
+            this.legend.addTo(this.map);
         },
         showSource(name) {
             return this.feature == "London" && this.show && this.sources.find(s => s.name == name && s.selected) != null
@@ -378,17 +435,6 @@
         },
         toggleData(feature) {
             this.feature = feature.properties.EER13NM;
-            getData('../archive/epidemia_model/20230710-155545-73eba527/incidence.json')
-                .then(data => {
-                    Plotly.newPlot(self.graph, [{
-                        x: data.date.map(d => new Date(d * 24 * 60 * 60 * 1000)),
-                        y: data.median,
-                        line: {color: "rgb(231,107,243)"},
-                        mode: "lines",
-                        name: "Cases",
-                        showlegend: true,
-                    }], layout);
-                });
             this.show = !this.show;
         },
         graph: document.getElementById('graph'),
@@ -403,7 +449,7 @@
                         opacity: 1,
                         color: 'white',
                         dashArray: '3',
-                        fillOpacity: 0.7
+                        fillOpacity: 0.9
                     }
                 },
                 onEachFeature: function (feature, layer) {
@@ -419,25 +465,30 @@
             });
             this.geojson.addTo(this.map);
             this.legend.onAdd = function (map) {
+                const ind = self.ind(self.indicator);
 
-                var div = L.DomUtil.create('div', 'info legend'),
+                const range = self.range(ind);
+                const max = range[1];
+                const min = range[0];
+                const interval = (max - min) / 5;
+                let div = L.DomUtil.create('div', 'info legend'),
                     grades = [0, 0.2, 0.4, 0.6, 0.8, 1],
-                    labels = [];
-
+                    labels = [min, min + interval, min + 2 * interval, min + 3 * interval, min + 4 * interval, max];
+                labels = labels.map(l => Math.round(l * 1000) / 1000)
                 // loop through our density intervals and generate a label with a colored square for each interval
-                for (var i = 0; i < grades.length; i++) {
+                for (let i = 0; i < grades.length; i++) {
                     div.innerHTML +=
-                        '<i style="background:' + getColorForNum(grades[i] + 0.1) + '"></i> ' +
-                        grades[i] + '<br>';
+                        '<i style="background:' + getColorForNum(grades[i] + 0.1, [0, 1], ind) + '"></i> ' +
+                        labels[i] + '<br>';
                 }
 
                 return div;
             };
-            this.legend.addTo(this.map);
-            getData('../archive/risk_score/20230710-171229-bd7eda5f/collated_data.json')
+
+            getData('../archive/risk_score/20230710-195851-e18afafa/collated_data.json')
                 .then(data => {
                     this.scores = data;
-
+                    this.legend.addTo(this.map);
                     getData('https://raw.githubusercontent.com/martinjc/UK-GeoJSON/master/json/electoral/gb/topo_eer.json')
                         .then(data => this.geojson.addData(data));
                 });
@@ -458,6 +509,9 @@
 
 </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script src="https://d3js.org/d3-color.v1.min.js"></script>
+<script src="https://d3js.org/d3-interpolate.v1.min.js"></script>
+<script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
 </body>
 </html>

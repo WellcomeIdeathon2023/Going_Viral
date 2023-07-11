@@ -1,1 +1,32 @@
-{"group":["London","Scotland","East of England","Midlands","North East and Yorkshire","North West","South East","South West"],"value":[2,1,4,1,4,3,2,4],"type":["risk","risk","risk","risk","risk","risk","risk","risk"]}
+{
+  "group": [
+    "London",
+    "Scotland",
+    "East of England",
+    "Midlands",
+    "North East and Yorkshire",
+    "North West",
+    "South East",
+    "South West"
+  ],
+  "value": [
+    2,
+    1,
+    4,
+    1,
+    4,
+    3,
+    2,
+    4
+  ],
+  "type": [
+    "risk",
+    "risk",
+    "risk",
+    "risk",
+    "risk",
+    "risk",
+    "risk",
+    "risk"
+  ]
+}

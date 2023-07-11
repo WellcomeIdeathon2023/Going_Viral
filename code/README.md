@@ -29,22 +29,13 @@ This is an [`orderly`](https://github.com/vimc/orderly) project. The directories
 1. Run and commit reports with `orderly::orderly_run` and `orderly::orderly_commit`.
    See https://www.vaccineimpact.org/orderly/reference/index.html#basic-use
 
-## Running OrderlyWeb
+## Running OrderlyWeb (the data pipeline web interface)
 
+Make sure your working directory is the `code` subdirectory.
 To run OW first make sure you have initialised the `orderly` database:
 
     orderly::orderly_rebuild(".")
 
 Then from a bash terminal:
 
-```
-docker pull vimc/orderly-web-standalone:master
-docker run --rm -p 8888:8888 \
-         -v $PWD:/orderly \
-         -v $PWD/dash/config:/etc/orderly/web \
-         -v $PWD/dash/logo:/static/public/img/logo \
-         -v $PWD/dash/css:/static/public/css \
-         -n qquavers_orderly_web \
-         vimc/orderly-web-standalone:master
-docker cp $PWD/dash/logo/favicon.ico qquavers_orderly_web:/static/public
-```
+   ./run.sh
