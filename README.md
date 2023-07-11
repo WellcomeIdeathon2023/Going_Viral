@@ -10,7 +10,7 @@ Feel free to create additional folders in this repository but please use the exi
 
 # About Our Solution
 Our prototype comprises an [orderly](https://www.vaccineimpact.org/orderly/) repository and a user friendly web app.
-These can be found in the `code` folder; please see the [README](code/README.md) in that subdirectory for full instructions 
+These can be found in the [code](code) folder; please see the [README](code/README.md) in that subdirectory for full instructions 
 on running the pipeline and web app.
 
 # LICENCE
