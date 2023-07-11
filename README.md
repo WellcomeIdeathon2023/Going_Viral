@@ -28,4 +28,14 @@ The code in this repository is licenced under a permissive [MIT licence](https:/
 
 # Running the prototype
 
-Our 'orderly' repository can be found in the code folder. This includes 2 main folders: src, where you will find our scripts; archive, where you will find our outputs from running the code. There are also guidelines on how to download the orderly R package and which order to run the reports in.  
+### Requirements
+* docker
+
+### Running
+1. First start OrderlyWeb (the data pipeline app) using docker, from the `code` directory:
+    `docker run `
+2. Open the dashboard in a browser: [index.html](code/dash/index.html)
+
+Our 'orderly' repository can be found in the code folder. 
+This includes 2 main folders: src, where you will find our scripts; archive, where you will find our outputs from running the code. 
+There are also guidelines on how to download the orderly R package and which order to run the reports in.
