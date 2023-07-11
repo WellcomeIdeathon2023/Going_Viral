@@ -8,7 +8,7 @@ incidence = readRDS("incidence.rds")
 # Choose date to make prediction for
 if (date == "NA"){
   # Set date to maximum data in data set if not given
-  report_date = max(comb_data$date) 
+  report_date = max(rt$date) - 7
 } else (
   report_date = as.Date(date, origin='1970-01-01')
 )
@@ -16,7 +16,7 @@ if (date == "NA"){
 # Get unique regions
 regions = unique(comb_data$tidy_loc1)
 regions = regions[!is.na(regions)]
-regions_new = regions[which(regions != "London")]
+regions_new = regions[!regions %in% c("London", "England")]
 
 # Select rt values for given date. 
 rt = rt %>% 
@@ -24,11 +24,11 @@ rt = rt %>%
   dplyr::filter(tag != "60% CI") %>%
   dplyr::select(-upper) # Only consider lower 30 and 90% CIs for score metric
 # Generate fake data for the rest of the UK
-rt_random = data.frame(date = rep(rt$date, length(regions)-1),
-                       lower = runif((length(regions)-1) * 2, 0, 3),
+rt_random = data.frame(date = rep(rt$date, length(regions_new)),
+                       lower = runif((length(regions_new)) * 2, 0, 3),
                        group = rep(regions_new, each=2),
-                       tag = rep(rt$tag, length(regions)-1),
-                       level = rep(rt$level, length(regions)-1))
+                       tag = rep(rt$tag, length(regions_new)),
+                       level = rep(rt$level, length(regions_new)))
 rt = rbind(rt, rt_random)
 # Rt risk score contribution.  Plus one if lower 90% CI is above 1 and if lower
 # 30% CI is above 1.(Basically +2 if 90% > 1 and +1 if only 30% > 1)
@@ -36,7 +36,7 @@ rt$score = ifelse(rt$lower > 1, 1, 0)
 rt_collate = rt %>% 
   dplyr::filter(tag == "90% CI")  %>%
   dplyr::select(group, lower) %>% 
-  dplyr::mutate(type = "Lower 90% credible interval")
+  dplyr::mutate(type = "rt")
 names(rt_collate) <- c("group", "value", "type")
 rt = rt %>% dplyr::group_by(group) %>%
   dplyr::summarise(score = sum(score))
@@ -46,7 +46,7 @@ cases_collate =  comb_data %>%
   dplyr::filter(date == report_date) %>%
   ungroup %>% 
   dplyr::select(tidy_loc1, case_count) %>% 
-  dplyr::mutate(type = "Cases on date of report")
+  dplyr::mutate(type = "cases")
 names(cases_collate) <- c("group", "value", "type")
 cases =  incidence %>% 
   dplyr::filter(date > report_date) %>% 
@@ -57,7 +57,7 @@ cases_new <- data.frame("group" = regions_new,
                         "daily_mean" =  runif(length(regions_new), 0, 1000))
 cases = rbind(cases, cases_new)
 forecast_collate =  cases %>% 
-  dplyr::mutate(type = "Mean daily forecast for next week")
+  dplyr::mutate(type = "forecast")
 names(forecast_collate) <- c("group", "value", "type")
 # Weekly forecast score contribution. Plus one if mean increase is greater than 
 # 100 (probably would want to be population weighted), minus one if 0 cases are 
@@ -71,7 +71,7 @@ coverage = comb_data %>%
   dplyr::select(date, tidy_loc1, coverage) %>%
   dplyr::filter(date >= report_date)
 coverage_collate = coverage %>% ungroup %>% select(tidy_loc1, coverage) %>%
-  dplyr::mutate(type = "Vaccine coverage")
+  dplyr::mutate(type = "coverage")
 names(coverage_collate) <- c("group", "value", "type")
 # If coverage is less than 25% increase risk score by 2, if less than 50% increase
 # by 1. If vaccination is 95% or more decrease risk score by 1.
@@ -100,7 +100,7 @@ sentiment$ratio = ifelse(is.nan(sentiment$ratio), sample(-5:5), sentiment$ratio)
 # If ratio is < 1 and more negative sentiment that positive +1 from score.
 sentiment_collate = sentiment %>%  filter(!is.na(tidy_loc1)) %>%
   select(tidy_loc1, ratio) %>%
-  mutate(type = "Ratio of positive tweets to negative tweets")
+  mutate(type = "sentiment")
 names(sentiment_collate) <- c("group", "value", "type")
 sentiment$score = ifelse(sentiment$ratio > 1, -1, 1)
 sentiment$score[is.na(sentiment$score)] = 0
@@ -126,10 +126,8 @@ if (use_sentiment == TRUE){
 risk_scores = risk_score %>% 
   dplyr::group_by(group) %>%
   dplyr::summarise(total_score = sum(score))
-
-risk_scores$classify = ifelse(risk_scores$total_score < 1, "low", 
-                              ifelse(risk_scores$total_score < 5, "medium", "high"))
-
+risk_scores$type = "risk"
+names(risk_scores) <- c("group", "value", "type")
 print(risk_scores)
 
 # Selects the different data sources the user wants to generate the score
@@ -139,10 +137,14 @@ write(risk_scores_json, "risk_score.json")
 saveRDS(risk_scores, file = "risk_score.rds")
 
 
+# Collates data for dashboard
 collated_data = rbind(rt_collate, cases_collate, forecast_collate,
-                      sentiment_collate, coverage_collate)
+                      sentiment_collate, coverage_collate, risk_scores)
+collated_data_wide = tidyr::spread(collated_data, key = type, value = value)
 
-collated_data_json = toJSON(collated_data)
+print(collated_data_wide)
+
+collated_data_json = toJSON(collated_data_wide)
 write(collated_data_json, "collated_data.json")
 
 rmarkdown::render("blurb.Rmd")
