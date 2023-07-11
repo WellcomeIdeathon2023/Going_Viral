@@ -8,7 +8,7 @@ incidence = readRDS("incidence.rds")
 # Choose date to make prediction for
 if (date == "NA"){
   # Set date to maximum data in data set if not given
-  report_date = max(case_dat$date) 
+  report_date = max(comb_data$date) 
 } else (
   report_date = as.Date(date, origin='1970-01-01')
 )
@@ -145,3 +145,4 @@ collated_data = rbind(rt_collate, cases_collate, forecast_collate,
 collated_data_json = toJSON(collated_data)
 write(collated_data_json, "collated_data.json")
 
+rmarkdown::render("blurb.Rmd")
