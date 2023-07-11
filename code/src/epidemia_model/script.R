@@ -27,7 +27,7 @@ case_dat[is.na(case_dat)] = 0
 # End date 22nd December 2020 as that's when data zeros in London "2020-12-22"
 case_dat = case_dat %>%
   dplyr::filter(date > as.Date("2020-07-01") & date <= as.Date("2020-12-22")) %>%
-  dplyr::select(-"England", -"Northern Ireland", -"Scotland", -"Wales")
+  dplyr::select(-"England", -"Scotland")
 
 # Gather the data - filter to just London for prototype
 case_dat = tidyr::gather(case_dat, key = "region", value = "cases", -date) %>%
@@ -74,8 +74,8 @@ ggsave("plot_cases.png",
 rt = epidemia::plot_rt(fm, newdata = new_dat)$data
 incidence = epidemia::plot_obs(fm, newdata = new_dat, type = "cases")$layers[[3]]$data
 
-saveRDS(rt, "rt.RDS")
-saveRDS(incidence, "incidence.RDS")
+saveRDS(rt, "rt.rds")
+saveRDS(incidence, "incidence.rds")
 
 rt_json = rjson::toJSON(rt)
 write(rt_json, "rt.json")

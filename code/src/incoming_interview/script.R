@@ -27,4 +27,8 @@ df <- data.frame(interview=int,
 
 saveRDS(df, "dat.rds")
 
+for_website = df[c(17,14),]
+for_website_json = rjson::toJSON(for_website)
+write(for_website_json, "quotes.json")
+
 rmarkdown::render("blurb.Rmd")

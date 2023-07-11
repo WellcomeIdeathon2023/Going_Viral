@@ -10,14 +10,14 @@ library(orderly)
 2) Download / create our incoming data sources.  This requires an api key for
 the globaldothealth data set to be set as an environment variable `$API_KEY`.
 ```
+Sys.setenv(API_KEY = "xxxx"")
 orderly_run("incoming_globaldothealth")
 orderly_run("incoming_vaxtweets")
 orderly_run("incoming_interview")
 orderly_run("incoming_vaccinationcoverage")
 ```
 
-3) Combine the case data, vax tweets and xxx into one dataset for future tasks.  
-#TODO add in about archiving
+3) Combine the case data, vax tweets interviews and vaccination coverage into one data set for future tasks.  
 ```
 orderly_run("collate_data")
 ```

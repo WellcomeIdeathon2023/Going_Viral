@@ -13,15 +13,18 @@ Feel free to create additional folders in this repository but please use the exi
 The code in this repository is licenced under a permissive [MIT licence](https://opensource.org/licenses/MIT). All other content is licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). This means you may use any content in this repository as long as you credit the authors.
 
 # Required packages
-* orderly
 * globaldothealth (devtools::install_github("globaldothealth/list/api/R"))
-* dplyr
-* tidytext
+* epidemia (devtools::install_github("ImperialCollegeLondon/epidemia"))
+* orderly
 * wordcloud
 * stopwords
-* epidemia (devtools::install_github("ImperialCollegeLondon/epidemia"))
 * lubridate
 * tidyr
+* tidytext
+* ggplot2
+* dplyr
+* reshape2
+* rjson
 
 # Running the prototype
 
@@ -35,4 +38,4 @@ The code in this repository is licenced under a permissive [MIT licence](https:/
 
 Our 'orderly' repository can be found in the code folder. 
 This includes 2 main folders: src, where you will find our scripts; archive, where you will find our outputs from running the code. 
-There are also guidelines on how to download the orderly R package and which order to run the reports in.  
+There are also guidelines on how to download the orderly R package and which order to run the reports in.

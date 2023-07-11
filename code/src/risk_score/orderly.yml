@@ -19,12 +19,19 @@ artefacts:
       - risk_score.rds
       - risk_score.json
       - collated_data.json
+  - report:
+      description: simple description
+      filenames: 
+      - blurb.html
       
 packages:
   - ggplot2
   - dplyr
   - tidyr
   - rjson
+
+resources:
+  - blurb.Rmd
   
 depends:
  collate_data:
