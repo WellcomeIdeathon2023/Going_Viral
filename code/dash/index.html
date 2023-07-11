@@ -56,7 +56,7 @@
             margin: 0 auto;
             opacity: 0.9;
             border: 5px solid;
-            box-shadow: 0 3px 14px rgba(0,0,0,0.4);
+            box-shadow: 0 3px 14px rgba(0, 0, 0, 0.4);
         }
     </style>
 </head>
@@ -225,11 +225,13 @@
                     <h5 class="text-center">Selected Area: <span v-text="feature" class="fw-bold"></span></h5>
                     <div class="flex-column" id="wordcloud" style="z-index:700" v-show="show">
                         <div style="opacity: 1;">
-                            <span class="dot my-3" :style="{'border-color': activeColor}">
+                            <a href="http://localhost:8888/report/collate_data/latest"><span class="dot my-3"
+                                                                                             :style="{'border-color': activeColor}">
                                 <span class="d-flex align-items-center" style="margin: 0 auto;">
                                     Risk Score: <span v-text="risk"></span>
                                 </span>
                             </span>
+                            </a>
                         </div>
                     </div>
                     <div class="flex-column mt-4" id="interviews" style="z-index:700" v-show="show">
@@ -238,8 +240,9 @@
                                 <div class="leaflet-popup-content" style="margin: 0 auto; width: 300px;border-radius: 163px; overflow: hidden; background: white;
     color: #333;
     box-shadow: 0 3px 14px rgba(0,0,0,0.4);">
-                                    <img width="100%"
-                                         src="../archive/collate_data/20230704-150054-df8724c3/wordcloud_London_.png"/>
+                                    <a href="http://localhost:8888/report/collate_data/latest"><img width="100%"
+                                                                                                    src="../archive/collate_data/20230710-193642-1e3fad7a/wordcloud_London_.png"/>
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -250,7 +253,7 @@
                                 <p>I am qualms about quarantine and I do think my views are heard by politicians.</p>
                             </blockquote>
                             <figcaption class="blockquote-footer">
-                                20th June 2020
+                                <a href="http://localhost:8888/report/incoming_interviews/latest">20th June 2020</a>
                             </figcaption>
                         </figure>
                         <figure class="text-end" style="width: 300px; float: right">
@@ -258,12 +261,12 @@
                                 <p>I am wild about COVID19 and I do not think my views are heard by my church.</p>
                             </blockquote>
                             <figcaption class="blockquote-footer">
-                                21st June 2020
+                                <a href="http://localhost:8888/report/incoming_interviews/latest">21st June 2020</a>
                             </figcaption>
                         </figure>
                     </div>
                     <div class="flex-column mt-4" v-show="show">
-                        <img src="../archive/epidemia_model/20230710-201509-ece9eb0a/plot_cases.png" width="600px"/>
+                        <img src="../archive/epidemia_model/20230711-134523-2f501df6/plot_cases.png" width="600px"/>
                     </div>
 
                 </div>

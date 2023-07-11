@@ -8,36 +8,11 @@ Feel free to create additional folders in this repository but please use the exi
 * `code` - All code used as part of your solution should be uploaded this folder and is expected to be reproducible.
 * `results` - Final results, including presented slides and other content, should be uploaded to this folder.
 
+# About Our Solution
+Our prototype comprises an [orderly](https://www.vaccineimpact.org/orderly/) repository and a user friendly web app.
+These can be found in the [code](code) folder; please see the [README](code/README.md) in that subdirectory for full instructions 
+on running the pipeline and web app.
+
 # LICENCE
 
 The code in this repository is licenced under a permissive [MIT licence](https://opensource.org/licenses/MIT). All other content is licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). This means you may use any content in this repository as long as you credit the authors.
-
-# Required packages
-* globaldothealth (devtools::install_github("globaldothealth/list/api/R"))
-* epidemia (devtools::install_github("ImperialCollegeLondon/epidemia"))
-* orderly
-* wordcloud
-* stopwords
-* lubridate
-* tidyr
-* tidytext
-* ggplot2
-* dplyr
-* reshape2
-* rjson
-
-# Running the prototype
-
-### Requirements
-* docker
-
-### Running
-1. First start OrderlyWeb (the data pipeline app) using docker, from the `code` directory:
-    `./run.sh`
-2. Open the dashboard in a browser: [index.html](code/dash/index.html)
-
-Our 'orderly' repository can be found in the code folder. 
-This includes 2 main folders: src, where you will find our scripts; archive, where you will find our outputs from running the code. 
-There are also guidelines on how to download the orderly R package and which order to run the reports in.
-
-data and results are deliberately empty as src includes an orderly pipeline with everything inbuilt.
