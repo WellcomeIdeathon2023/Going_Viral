@@ -144,4 +144,3 @@ collated_data = rbind(rt_collate, cases_collate, forecast_collate,
 
 collated_data_json = toJSON(collated_data)
 write(collated_data_json, "collated_data.json")
-

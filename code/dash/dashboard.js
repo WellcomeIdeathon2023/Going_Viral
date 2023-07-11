@@ -252,6 +252,7 @@ function getColor(name) {
 }
 
 function getColorForNum(n) {
+  if (n == null) return '#bbb';
   return n > 0.9 ? '#BD0026' :
       n > 0.8 ? '#E31A1C' :
           n > 0.7 ? '#FC4E2A' :
